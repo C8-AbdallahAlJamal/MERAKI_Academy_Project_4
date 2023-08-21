@@ -31,8 +31,45 @@ const Register = async (req, res) => {
 
 }
 
-const Login = async(req, res) => {
-    const { email, password } = req.body;
+const Login = async (req, res) => {
+    let { email, password } = req.body;
+    email = email.toLowerCase();
+    try {
+        const result = await userModel.findOne({ email });
+        if (result) {
+            const valid = await bcrypt.compare(password, result.password);
+            if (valid) {
+                const payload = {
+                    userId: result._id,
+                    role: result.role,
+                }
+                const options = {
+                    expiresIn: "60m"
+                }
+                const token = jwt.sign(payload, process.env.SECRET, options);
+                res.json({
+                    success: true,
+                    token: token
+                })
+            } else {
+                res.json({
+                    success: false,
+                    message: "The email doesn't exist or the password you entered is wrong"
+                })
+            }
+        } else {
+            res.json({
+                success: true,
+                message: "The email doesn't exist or the password you entered is wrong"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
 }
 
 module.exports = {
