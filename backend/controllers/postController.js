@@ -1,8 +1,7 @@
 const postModel = require("../models/postsSchema");
-const authentication = require("../middleware/authentication");
 
 const createNewPost = (req, res) => {
-    console.log("df");
+    const {description, picture} = req.body
 }
 
 module.exports = {
