@@ -1,15 +1,19 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const usersSchema = new mongoose.Schem({
+const usersSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: mongoose.Schema.Types.ObjectId, ref: "Role" },
-    friends: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    role: { type: mongoose.Schema.Types.ObjectId, ref: "Role", required: true },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     picture: {type: String}
 });
+
+usersSchema.pre("findOne", async function(){
+    this.email = this.email.toLowerCase();
+})
 
 usersSchema.pre("save", async function () {
     this.email = this.email.toLowerCase();
