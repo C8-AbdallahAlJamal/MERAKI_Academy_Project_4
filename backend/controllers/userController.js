@@ -72,6 +72,35 @@ const Login = async (req, res) => {
     }
 }
 
+const addFriend = async (req, res) => {
+    const { friendId } = req.params;
+    const { userId } = req.token;
+
+
+    try {
+        const result = await userModel.findByIdAndUpdate(userId, { $addToSet: { friends: friendId } }, { new: true }).populate("friends");
+        if (result) {
+            await userModel.findByIdAndUpdate(friendId, { $addToSet: { friends: userId } });
+            res.json({
+                success: true,
+                message: "Friend Added",
+                userFriendsList: result.friends
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "User not found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
 const getFriendsList = (req, res) => {
     const { userId } = req.token;
     userModel.findOne({ _id: userId }).populate("friends").then((result) => {
@@ -92,5 +121,6 @@ const getFriendsList = (req, res) => {
 module.exports = {
     Register,
     Login,
-    getFriendsList
+    getFriendsList,
+    addFriend
 }
