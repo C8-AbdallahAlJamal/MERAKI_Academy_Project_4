@@ -177,6 +177,36 @@ const removeComment = async (req, res) => {
     }
 }
 
+const getAllPosts = async (req, res) => {
+    try {
+        const result = await postModel.find({});
+        res.json({
+            success: true,
+            posts: result.length? result: "No Posts Available"
+        })
+    } catch (error) {
+        res.json({
+            success: false,
+            error: error.message
+        })
+    }
+}
+
+const getMyPosts = async (req, res) => {
+    const { userId } = req.token;
+    try {
+        const result = await postModel.find({ author: userId });
+        res.json({
+            success: true,
+            posts: result.length ? result : "No Posts Available"
+        })
+    } catch (error) {
+        res.json({
+            success: false,
+            error: error.message
+        })
+    }
+}
 
 module.exports = {
     createNewPost,
@@ -186,4 +216,6 @@ module.exports = {
     Unlike,
     addComment,
     removeComment,
+    getAllPosts,
+    getMyPosts
 }

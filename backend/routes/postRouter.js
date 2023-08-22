@@ -1,5 +1,5 @@
 const express = require("express");
-const { createNewPost, removePostById, updatePostById, Like, Unlike, addComment, removeComment } = require("../controllers/postController");
+const { createNewPost, removePostById, updatePostById, Like, Unlike, addComment, removeComment, getAllPosts, getMyPosts } = require("../controllers/postController");
 const authentication = require("../middleware/authentication");
 postRouter = express.Router();
 
@@ -10,5 +10,7 @@ postRouter.put("/:postId/like", authentication, Like);
 postRouter.put("/:postId/unlike", authentication, Unlike);
 postRouter.post("/:postId/comment", authentication, addComment);
 postRouter.delete("/:postId/:commentId", authentication, removeComment);
+postRouter.get("/", authentication, getAllPosts);
+postRouter.get("/myposts", authentication, getMyPosts);
 
 module.exports = postRouter;

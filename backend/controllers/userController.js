@@ -76,7 +76,6 @@ const addFriend = async (req, res) => {
     const { friendId } = req.params;
     const { userId } = req.token;
 
-
     try {
         const result = await userModel.findByIdAndUpdate(userId, { $addToSet: { friends: friendId } }, { new: true }).populate("friends");
         if (result) {
@@ -122,5 +121,5 @@ module.exports = {
     Register,
     Login,
     getFriendsList,
-    addFriend
+    addFriend,
 }
