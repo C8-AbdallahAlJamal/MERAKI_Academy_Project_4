@@ -26,6 +26,32 @@ const createNewPost = async (req, res) => {
     }
 }
 
+const removePostById = async (req, res) => {
+    const { postId } = req.params;
+    try {
+        const post = await postModel.findOneAndDelete({ _id: postId });
+        if (post) {
+            res.json({
+                success: true,
+                message: "Post Deleted",
+                post
+            })
+        } else {
+            res.json({
+                success: true,
+                message: "Post Not Found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
 module.exports = {
-    createNewPost
+    createNewPost,
+    removePostById
 }
