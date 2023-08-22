@@ -148,14 +148,35 @@ const addComment = async (req, res) => {
             post: result
         })
     } catch (error) {
-        
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
     }
 
 }
 
-const removeComment = (req, res) => {
-    
+const removeComment = async (req, res) => {
+    const { postId, commentId } = req.params;
+
+    try {
+        const post = await postModel.findByIdAndUpdate({ _id: postId }, { $pull: { comments: commentId } }, { new: true }).populate("comments");
+        await commentModel.findOneAndDelete({ _id: commentId });
+        res.json({
+            success: true,
+            message: "Comment removed",
+            post
+        })
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
 }
+
 
 module.exports = {
     createNewPost,
@@ -164,5 +185,5 @@ module.exports = {
     Like,
     Unlike,
     addComment,
-    removeComment
+    removeComment,
 }

@@ -72,7 +72,25 @@ const Login = async (req, res) => {
     }
 }
 
+const getFriendsList = (req, res) => {
+    const { userId } = req.token;
+    userModel.findOne({ _id: userId }).populate("friends").then((result) => {
+        res.json({
+            success: true,
+            friends: result.friends
+        })
+    }).catch((err) => {
+        if (err) {
+            res.json({
+                message: "Server Error",
+                error: err.message
+            })
+        }
+    })
+}
+
 module.exports = {
     Register,
-    Login
+    Login,
+    getFriendsList
 }
