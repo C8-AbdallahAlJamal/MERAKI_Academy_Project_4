@@ -1,6 +1,5 @@
 const postModel = require("../models/postsSchema");
 const commentModel = require("../models/commentsSchema");
-
 const createNewPost = async (req, res) => {
     const { description, picture } = req.body;
     const author = req.token.userId;
@@ -136,12 +135,18 @@ const addComment = async (req, res) => {
     const { postId } = req.params;
     const commenter = req.token.userId;
     const { description } = req.body;
-    
-    
-
     try {
-        const result = await postModel.findOneAndUpdate({ _id: postId });
-        console.log(result);
+        const newComment = new commentModel({
+            description,
+            commenter
+        });
+        await newComment.save();
+        const result = await postModel.findOneAndUpdate({ _id: postId }, { $push: { comments: newComment._id } }, { new: true }).populate("comments");
+        res.json({
+            success: true,
+            message: "Comment Added",
+            post: result
+        })
     } catch (error) {
         
     }
