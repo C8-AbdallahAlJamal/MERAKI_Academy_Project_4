@@ -1,4 +1,5 @@
 const postModel = require("../models/postsSchema");
+const commentModel = require("../models/commentsSchema");
 
 const createNewPost = async (req, res) => {
     const { description, picture } = req.body;
@@ -131,10 +132,32 @@ const Unlike = async (req, res) => {
     }
 }
 
+const addComment = async (req, res) => {
+    const { postId } = req.params;
+    const commenter = req.token.userId;
+    const { description } = req.body;
+    
+    
+
+    try {
+        const result = await postModel.findOneAndUpdate({ _id: postId });
+        console.log(result);
+    } catch (error) {
+        
+    }
+
+}
+
+const removeComment = (req, res) => {
+    
+}
+
 module.exports = {
     createNewPost,
     removePostById,
     updatePostById,
     Like,
-    Unlike
+    Unlike,
+    addComment,
+    removeComment
 }
