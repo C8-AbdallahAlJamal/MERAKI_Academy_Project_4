@@ -51,7 +51,90 @@ const removePostById = async (req, res) => {
     }
 }
 
+const updatePostById = async (req, res) => {
+    const { postId } = req.params;
+    const { description, picture } = req.body;
+    try {
+        const post = await postModel.findByIdAndUpdate(postId, req.body, { new: true });
+        if (post) {
+            res.json({
+                success: true,
+                message: "Post Updated",
+                post
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "Post Not Fount"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
+const Like = async (req, res) => {
+    const { postId } = req.params;
+    try {
+        const result = await postModel.findByIdAndUpdate(postId, { $inc: { numberOfLikes: 1 } }, { new: true });
+        if (result) {
+            res.json({
+                success: true,
+                message: "Like added",
+                post: result
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "Post Not Found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
+const Unlike = async (req, res) => {
+    const { postId } = req.params;
+    try {
+        const result = await postModel.findByIdAndUpdate(postId, { $inc: { numberOfLikes: -1 } }, { new: true });
+        if (result) {
+            if (result.numberOfLikes < 0) {
+                result.numberOfLikes = 0;
+                result.save();
+            } 
+            res.json({
+                success: true,
+                message: "Like removed",
+                post: result
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "Post Not Found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
 module.exports = {
     createNewPost,
-    removePostById
+    removePostById,
+    updatePostById,
+    Like,
+    Unlike
 }
