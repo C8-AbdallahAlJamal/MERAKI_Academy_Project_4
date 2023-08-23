@@ -1,0 +1,9 @@
+#container{
+    height: 100vh;
+}
+
+#register-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
