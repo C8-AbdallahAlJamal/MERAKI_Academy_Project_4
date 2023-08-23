@@ -143,10 +143,35 @@ const changePicture = async (req, res) => {
     }
 }
 
+const getUserInfo = async (req, res) => {
+    const { userId } = req.token;
+    try {
+        const result = await userModel.findById(userId).select("-password -role").populate("friends");
+        if (result) {
+            res.json({
+                success: true,
+                userInfo: result
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "User Not Found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
 module.exports = {
     Register,
     Login,
     getFriendsList,
     addFriend,
-    changePicture
+    changePicture,
+    getUserInfo
 }
