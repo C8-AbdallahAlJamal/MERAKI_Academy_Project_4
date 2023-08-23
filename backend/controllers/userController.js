@@ -117,9 +117,36 @@ const getFriendsList = (req, res) => {
     })
 }
 
+const changePicture = async (req, res) => {
+    const { picture } = req.body;
+    const { userId } = req.token;
+    try {
+        const result = await userModel.findByIdAndUpdate(userId, { picture }, { new: true });
+        if (result) {
+            res.json({
+                success: true,
+                message: "Picture Changed",
+                newPicture: result.picture
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "Post Not Found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
 module.exports = {
     Register,
     Login,
     getFriendsList,
     addFriend,
+    changePicture
 }

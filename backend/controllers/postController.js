@@ -208,6 +208,10 @@ const getMyPosts = async (req, res) => {
     }
 }
 
+const changePicture = (req, res) => {
+    
+}
+
 module.exports = {
     createNewPost,
     removePostById,
@@ -217,5 +221,6 @@ module.exports = {
     addComment,
     removeComment,
     getAllPosts,
-    getMyPosts
+    getMyPosts,
+    changePicture
 }

@@ -3,7 +3,8 @@ const {
     Register,
     Login,
     getFriendsList,
-    addFriend
+    addFriend,
+    changePicture
 } = require("../controllers/userController");
 
 const authentication = require("../middleware/authentication");
@@ -13,5 +14,6 @@ userRouter.post("/register", Register);
 userRouter.post("/login", Login);
 userRouter.get("/friends", authentication, getFriendsList);
 userRouter.put("/addfriend/:friendId", authentication, addFriend);
+userRouter.put("/changepicture", authentication, changePicture);
 
 module.exports = userRouter;
