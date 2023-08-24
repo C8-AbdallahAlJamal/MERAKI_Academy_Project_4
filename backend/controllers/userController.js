@@ -59,7 +59,7 @@ const Login = async (req, res) => {
             }
         } else {
             res.json({
-                success: true,
+                success: false,
                 message: "The email doesn't exist or the password you entered is wrong"
             })
         }

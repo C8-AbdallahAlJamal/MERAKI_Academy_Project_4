@@ -1,17 +1,20 @@
 import React from 'react'
 import "./Register.css"
 import { useState } from 'react'
-import { isDisabled } from '@testing-library/user-event/dist/utils';
-import { toBeEnabled } from '@testing-library/jest-dom/matchers';
-import userEvent from '@testing-library/user-event';
 import { useEffect } from 'react';
+import axios from 'axios';
+import {Link, useNavigate} from "react-router-dom";
 const Register = () => {
-    const [fName, setFName] = useState("");
-    const [lName, setLName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [passError, setPassError] = useState(null);
+    const [message, setMessage] = useState("");
+    const [picture, setPicture] = useState("");
+
+    const navigate = useNavigate();
 
     const isValidEmail = (email) => {
         return /\S+@\S+\.\S+/.test(email);
@@ -22,14 +25,23 @@ const Register = () => {
     }
 
     const addPicture = () => {
-        console.log("asf")
+        console.log("asf") // to be added later
     }
 
-    const registerHandle = (event) => {
-        if (!error) {
-
+    const registerHandle = async (event) => {
+        if (buttonHandleBoolean()) {
+            setMessage("An Error Occurred")
         } else {
-
+            setMessage("");
+            const registerObj = { firstName, lastName, email, password, picture };
+            const result = await axios.post("http://localhost:5000/user/Register", registerObj);
+            setMessage(result.data.message);
+            if (result.data.success) {
+                setTimeout(() => {
+                    navigate("/");
+                }, 2000)
+            }
+            
         }
     }
 
@@ -46,6 +58,10 @@ const Register = () => {
         setPassword(event.target.value);
     }
 
+    const buttonHandleBoolean = () => {
+        return email === "" || error || firstName === "" || lastName === "" || password === "" || passError;
+    }
+
     return (
         <div id="container">
             <div id="register-page">
@@ -56,11 +72,11 @@ const Register = () => {
                 </svg>
 
                 <input type="text" placeholder='First Name' onChange={ (event) => {
-                    setFName(event.target.value);
+                    setFirstName(event.target.value);
                 } }></input>
 
                 <input type="text" placeholder='Last Name' onChange={ (event) => {
-                    setLName(event.target.value);
+                    setLastName(event.target.value);
                 } }></input>
 
                 <input type="email" placeholder='Email Address' onChange={ (event) => {
@@ -77,7 +93,8 @@ const Register = () => {
 
                 { passError && password !== "" && <h5>{ passError }</h5> }
 
-                <button disabled={ email === "" || error || fName === "" || lName === "" || password === "" || passError } onClick={ registerHandle }>Register</button>
+                <button disabled={ buttonHandleBoolean() } onClick={ registerHandle }>Register</button>
+                {message}
             </div>
         </div>
     )
