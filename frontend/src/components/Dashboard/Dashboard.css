@@ -1,0 +1,6 @@
+#dashboard{
+    border: solid red;
+    max-width: 1300px;
+    margin: auto;
+    min-height: 100vh;
+}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import "./Home.css";
 import { useState } from 'react';
@@ -25,40 +25,47 @@ const Home = () => {
             if (!result.data.success) {
                 setMessage(result.data.message);
             } else {
+                console.log(result)
                 localStorage.setItem("Token", result.data.token);
+                user.setToken(result.data.token);
+                localStorage.setItem("userId", result.data.userId);
                 navigate("/Dashboard")
             }
         } else {
             setMessage("Please Enter Valid Inputs");
         }
     }
-    console.log(user.token);
+    useEffect(() => {
+        if (user.token) {
+            navigate("/Dashboard");
+        } else {
+            navigate("/")
+        }
+    }, [user.token]);
+
+    const signUpHandle = () => {
+        navigate("/Register")
+    }
     return (
         <div id="container">
-            {
-                user.token ?
-                    navigate("/Dashboard")
-                    :
-                    <div className="home-page">
-                        <input type="email" placeholder="Email Address" value={ email } onChange={ (event) => {
-                            if (!isValidEmail(event.target.value)) {
-                                setError("Email is invalid");
-                            } else {
-                                setError(null);
-                            }
-                            setEmail(event.target.value);
-                        } }></input>
-                        { error && email !== "" && <h5>{ error }</h5> }
-                        <input type="password" placeholder="Password" onChange={ (event) => {
-                            setPassword(event.target.value);
-                        } }></input>
-                        { message }
+            <div className="home-page">
+                <input type="email" placeholder="Email Address" value={ email } onChange={ (event) => {
+                    if (!isValidEmail(event.target.value)) {
+                        setError("Email is invalid");
+                    } else {
+                        setError(null);
+                    }
+                    setEmail(event.target.value);
+                } }></input>
+                { error && email !== "" && <h5>{ error }</h5> }
+                <input type="password" placeholder="Password" onChange={ (event) => {
+                    setPassword(event.target.value);
+                } }></input>
+                { message }
 
-                        <button onClick={ loginHandle }>Login</button>
-                        <Link to="/Register"><button>Sign Up</button></Link>
-                    </div>
-            }
-
+                <button onClick={ loginHandle }>Login</button>
+                <button onClick={signUpHandle}>Sign Up</button>
+            </div>
         </div>
     )
 }
