@@ -3,9 +3,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const Register = async (req, res) => {
-    const { firstName, lastName, email, password, picture } = req.body;
+    const { firstName, lastName, email, password, picture, country, location, bio, DOB } = req.body;
     const newUser = new userModel({
-        firstName, lastName, email, password, role: "64e3ace64dc89201354c8f7a", friends: [], picture
+        firstName, lastName, email, password, role: "64e3ace64dc89201354c8f7a", picture, country, location, bio, DOB,
     })
     try {
         const result = await (await newUser.save()).populate("role");
@@ -15,7 +15,9 @@ const Register = async (req, res) => {
             user: result
         })
     } catch (error) {
-        if (error.keyPattern) {
+        console.log(error)
+
+        if (error.keyPattern?.email) {
             res.json({
                 success: false,
                 message: "Account Already Exists",
@@ -24,7 +26,8 @@ const Register = async (req, res) => {
         } else {
             res.json({
                 success: false,
-                message: "Server Error`"
+                message: "Server Error",
+                error:error.message
             });
         }
     }
@@ -76,11 +79,12 @@ const Login = async (req, res) => {
 const addFriend = async (req, res) => {
     const { friendId } = req.params;
     const { userId } = req.token;
+    console.log(userId)
 
     try {
-        const result = await userModel.findByIdAndUpdate(userId, { $addToSet: { friends: friendId } }, { new: true }).populate("friends");
+        const result = await userModel.findByIdAndUpdate({ _id:userId }, { $addToSet: { friends:  friendId } }, { new: true }).populate("friends");
         if (result) {
-            await userModel.findByIdAndUpdate(friendId, { $addToSet: { friends: userId } });
+            await userModel.findByIdAndUpdate(friendId, { $addToSet: { friends: userId}  });
             res.json({
                 success: true,
                 message: "Friend Added",

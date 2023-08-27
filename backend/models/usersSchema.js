@@ -7,8 +7,12 @@ const usersSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: mongoose.Schema.Types.ObjectId, ref: "Role", required: true },
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", unique: true }],
-    picture: {type: String}
+    friends: [ { type: mongoose.Schema.Types.ObjectId, ref: "User" }  ],
+    picture: { type: String },
+    country: { type: String },
+    location: { type: String },
+    bio: { type: String },
+    DOB: {type: Date}
 });
 
 usersSchema.pre("save", async function () {

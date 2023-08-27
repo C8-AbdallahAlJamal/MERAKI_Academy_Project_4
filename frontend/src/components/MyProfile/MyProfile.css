@@ -1,0 +1,66 @@
+#my-profile-page{
+    border: solid red;
+    max-width: 1300px;
+    margin: auto;
+    min-height: 100vh;
+}
+
+#profile-picture-div{
+    width: fit;
+    margin: 100px auto;
+    border: blue solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+#my-profile-picture{
+    border: red solid;
+    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+}
+
+#columns{
+    text-align: center;
+    border: blueviolet solid;
+    height: 500px;
+    display: grid;
+    grid-template-columns: 2fr 4fr;
+    grid-gap: 50px;
+}
+
+#personal-info{
+    border: rgb(140, 140, 140) solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    height: fit-content;
+    overflow: hidden;
+}
+
+#posts{
+    border: red solid;
+    border-radius: 20px;
+    /* height: fit-content;  */
+}
+.width{
+    width:100%;
+    border-bottom: rgb(126, 122, 122) 1px solid;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 7px;
+    justify-content: center;
+    font-family: 'Chivo';
+}
+#DOB{
+    border-bottom: 0px;
+}
+.heads{
+    font-size: 23px;
+    color: rgb(45, 45, 45);
+}

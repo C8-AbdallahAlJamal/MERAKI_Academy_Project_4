@@ -25,7 +25,6 @@ const Home = () => {
             if (!result.data.success) {
                 setMessage(result.data.message);
             } else {
-                console.log(result)
                 localStorage.setItem("Token", result.data.token);
                 user.setToken(result.data.token);
                 localStorage.setItem("userId", result.data.userId);
@@ -35,8 +34,9 @@ const Home = () => {
             setMessage("Please Enter Valid Inputs");
         }
     }
+
     useEffect(() => {
-        if (user.token) {
+        if (localStorage.getItem("Token")) {
             navigate("/Dashboard");
         } else {
             navigate("/")
@@ -45,6 +45,12 @@ const Home = () => {
 
     const signUpHandle = () => {
         navigate("/Register")
+    }
+
+    const handleEnterButton = (event) => {
+        if (event.key === "Enter") {
+            loginHandle();
+        }
     }
     return (
         <div id="container">
@@ -56,11 +62,11 @@ const Home = () => {
                         setError(null);
                     }
                     setEmail(event.target.value);
-                } }></input>
+                } } onKeyDown={handleEnterButton}></input>
                 { error && email !== "" && <h5>{ error }</h5> }
                 <input type="password" placeholder="Password" onChange={ (event) => {
                     setPassword(event.target.value);
-                } }></input>
+                } } onKeyDown={handleEnterButton}></input>
                 { message }
 
                 <button onClick={ loginHandle }>Login</button>
