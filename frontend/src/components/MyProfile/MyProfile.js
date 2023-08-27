@@ -16,10 +16,12 @@ const MyProfile = () => {
     const [location, setLocation] = useState("");
     const [DOB, setDOB] = useState("");
     const [postContent, setPostContent] = useState("");
+    const [myPosts, setMyPosts] = useState("");
 
     useEffect(() => {
         if (localStorage.getItem("Token")) {
             getUserInfo();
+            getMyPosts();
         } else {
             navigate("/");
         }
@@ -49,6 +51,7 @@ const MyProfile = () => {
             if (postContent !== "") {
                 try {
                     const result = await axios.post("http://localhost:5000/post/", { description: postContent, picture: "" }, { headers: { Authorization: `Bearer ${user.token}` } });
+                    getMyPosts();
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -56,6 +59,17 @@ const MyProfile = () => {
             
         } else {
             navigate("/");
+        }
+    }
+
+    const getMyPosts = async () => {
+        try {
+            const result = await axios.get("http://localhost:5000/post/myposts", { headers: { Authorization: `Bearer ${user.token}` } });
+            result.data.posts.reverse();
+            setMyPosts(result.data.posts);
+
+        } catch (error) {
+            console.log(error.message)
         }
     }
 
@@ -88,11 +102,25 @@ const MyProfile = () => {
                             { DOB }
                         </div>
                     </div>
-                    <div id="posts">
+                    <div id="posts-column">
                         <div id="add-post">
                             <img id = "new-post-personal-picture"src={user.URL}></img>
                             <textarea id="new-post-textarea" placeholder="What's on your mind?" onChange={ postContectHandle }></textarea>
                             <button onClick={postHandle}>Post</button>
+                        </div>
+                        <div id = "my-posts">
+                            { myPosts&&myPosts.map((element) => {
+                                return (
+                                    <div key={ element._id } className='posts'>
+                                        <div id = "my-post-author-info">
+                                            <img id="new-post-personal-picture" src={ user.URL }></img>
+                                            <h6>{ name }</h6>
+                                        </div>
+                                        
+                                    
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
 

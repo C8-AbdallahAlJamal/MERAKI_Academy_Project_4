@@ -6,7 +6,7 @@ import MyProfile from "./components/MyProfile/MyProfile";
 import React, {useEffect} from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { createContext, useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const UserContext = createContext();
 

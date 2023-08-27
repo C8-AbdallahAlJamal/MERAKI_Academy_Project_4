@@ -3,6 +3,7 @@
     max-width: 1300px;
     margin: auto;
     min-height: 100vh;
+    height: fit-content;
 }
 
 #profile-picture-div{
@@ -30,6 +31,7 @@
     display: grid;
     grid-template-columns: 2fr 4fr;
     grid-gap: 50px;
+    height: fit-content;
 }
 
 #personal-info{
@@ -42,10 +44,10 @@
     overflow: hidden;
 }
 
-#posts{
+#posts-column{
     border: red solid;
     border-radius: 20px;
-    /* height: fit-content;  */
+    height: fit-content; 
 }
 .width{
     width:100%;
@@ -84,3 +86,7 @@
     text-align: center;
 }
 
+#my-post-author-info{
+    border: blue solid;
+    display: flex;
+}
