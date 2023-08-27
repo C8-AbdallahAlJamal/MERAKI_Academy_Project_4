@@ -6,8 +6,9 @@ import MyProfile from "./components/MyProfile/MyProfile";
 import React, {useEffect} from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { createContext, useState } from "react";
-export const UserContext = createContext();
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+export const UserContext = createContext();
 
 const App = () => {
     const [token, setToken] = useState(localStorage.getItem("Token"));

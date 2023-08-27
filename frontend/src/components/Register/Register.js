@@ -3,7 +3,7 @@ import "./Register.css"
 import { useState } from 'react'
 import { useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Register = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -12,7 +12,7 @@ const Register = () => {
     const [error, setError] = useState(null);
     const [passError, setPassError] = useState(null);
     const [message, setMessage] = useState("");
-    const [picture, setPicture] = useState("");
+    const [picture] = useState("");
     const [country, setCountry] = useState("");
     const [location, setLocation] = useState("");
     const [bio, setBio] = useState("");

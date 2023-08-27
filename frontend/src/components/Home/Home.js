@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from 'react'
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import "./Home.css";
 import { useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../App';
-import Dashboard from '../Dashboard/Dashboard';
 
 const Home = () => {
     const user = useContext(UserContext);

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from '../../App';
 import axios from 'axios';
 import { useState } from 'react';
+
 const MyProfile = () => {
     const navigate = useNavigate();
     const user = useContext(UserContext);
@@ -14,6 +15,8 @@ const MyProfile = () => {
     const [country, setCountry] = useState("");
     const [location, setLocation] = useState("");
     const [DOB, setDOB] = useState("");
+    const [postContent, setPostContent] = useState("");
+
     useEffect(() => {
         if (localStorage.getItem("Token")) {
             getUserInfo();
@@ -37,6 +40,25 @@ const MyProfile = () => {
 
     }
 
+    const postContectHandle = (event) => {
+        setPostContent(event.target.value);
+    }
+
+    const postHandle = async () => {
+        if (localStorage.getItem("Token")) {
+            if (postContent !== "") {
+                try {
+                    const result = await axios.post("http://localhost:5000/post/", { description: postContent, picture: "" }, { headers: { Authorization: `Bearer ${user.token}` } });
+                } catch (error) {
+                    console.log(error.message);
+                }
+            }
+            
+        } else {
+            navigate("/");
+        }
+    }
+
     return (
         localStorage.getItem("Token") ?
             <div id="my-profile-page">
@@ -55,7 +77,7 @@ const MyProfile = () => {
                         </div>
                         <div id="country" className='width'>
                             <h3 className='heads'>Country</h3>
-                            {country}
+                            { country }
                         </div>
                         <div id="location" className='width'>
                             <h3 className='heads'>Lives in</h3>
@@ -67,8 +89,10 @@ const MyProfile = () => {
                         </div>
                     </div>
                     <div id="posts">
-                        <div>
-                            
+                        <div id="add-post">
+                            <img id = "new-post-personal-picture"src={user.URL}></img>
+                            <textarea id="new-post-textarea" placeholder="What's on your mind?" onChange={ postContectHandle }></textarea>
+                            <button onClick={postHandle}>Post</button>
                         </div>
                     </div>
 

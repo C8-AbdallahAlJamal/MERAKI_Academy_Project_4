@@ -1,8 +1,7 @@
 import React, { useContext } from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from '../../App';
 import axios from 'axios';
-import { useState } from 'react';
 import { useEffect } from 'react';
 import "./Navigation.css"
 const Navigation = () => {
