@@ -58,7 +58,6 @@ const Navigation = () => {
         try {
             const result = await axios.put(`http://localhost:5000/user/addfriend/${event.target.name}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             user.setFriends([...user.friends, ...result.data.userFriendsList]);
-            console.log(result)
         } catch (error) {
             console.log(error.message);
         }
@@ -66,10 +65,9 @@ const Navigation = () => {
 
     const UnfollowUser = async (event) => {
         try {
-            const result = await axios.put(`http://localhost:5000/user/removefriend/${event.target.name}`, {}, { headers: { Authorization: `Bearer ${user.token}`} });
-            console.log(result);
-
+            const result = await axios.put(`http://localhost:5000/user/removefriend/${event.target.name}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             user.setFriends([...result.data.userFriendsList]);
+            console.log(result);
         } catch (error) {
 
         }
@@ -95,7 +93,13 @@ const Navigation = () => {
                                 <div /* onClick={ } */ style={ { cursor: "pointer" } } id="item" key={ element._id }>
                                     <h4>{ element.firstName + " " + element.lastName }</h4>
 
-                                    { !user.friends.find((item) => { return item._id === element._id; }) ? <button name={ element._id } onClick={ followUser }>Follow</button> : <button name={ element._id } onClick={ UnfollowUser }>Unfollow</button> }
+                                    {
+                                        !user.friends.find((item) => { return item._id === element._id; }) ?
+                                            
+                                        <button name={ element._id } onClick={ followUser }>Follow</button>
+                                        :
+                                        <button name={ element._id } onClick={ UnfollowUser }>Unfollow</button>
+                                    }
                                 </div>
                             )
                         }) }

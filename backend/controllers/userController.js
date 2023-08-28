@@ -200,7 +200,7 @@ const removeFriend = async (req, res) => {
     res.json({
         success: true,
         message: "Friend Removed",
-        friendsList: result.friends
+        userFriendsList: result.friends
     })
     console.log(result);
 }
