@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const Register = async (req, res) => {
     const { firstName, lastName, email, password, picture, country, location, bio, DOB } = req.body;
     const newUser = new userModel({
-        firstName, lastName, email, password, role: "64e3ace64dc89201354c8f7a", picture, country, location, bio, DOB,
+        firstName, lastName, email, password, role: "64ebbb0594a4c80b31fd1dc2", picture, country, location, bio, DOB,
     })
     try {
         const result = await (await newUser.save()).populate("role");
@@ -79,12 +79,9 @@ const Login = async (req, res) => {
 const addFriend = async (req, res) => {
     const { friendId } = req.params;
     const { userId } = req.token;
-    console.log(userId)
-
     try {
         const result = await userModel.findByIdAndUpdate({ _id:userId }, { $addToSet: { friends:  friendId } }, { new: true }).populate("friends");
         if (result) {
-            await userModel.findByIdAndUpdate(friendId, { $addToSet: { friends: userId}  });
             res.json({
                 success: true,
                 message: "Friend Added",
@@ -172,11 +169,49 @@ const getUserInfo = async (req, res) => {
     }
 }
 
+const getAllUsers = async (req, res) => {
+    const { userId } = req.token;
+    try {
+        const result = await userModel.find({ _id: { $ne: userId } });
+        if (result) {
+            res.json({
+                success: true,
+                result
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "Not Found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
+const removeFriend = async (req, res) => {
+    const { userId } = req.token;
+    const { friendId } = req.params;
+    const result = await userModel.findByIdAndUpdate(userId, { $pull: { friends: friendId } }, { new: true });
+    res.json({
+        success: true,
+        message: "Friend Removed",
+        friendsList: result.friends
+    })
+    console.log(result);
+}
+
 module.exports = {
     Register,
     Login,
     getFriendsList,
     addFriend,
     changePicture,
-    getUserInfo
+    getUserInfo,
+    getAllUsers,
+    removeFriend
 }

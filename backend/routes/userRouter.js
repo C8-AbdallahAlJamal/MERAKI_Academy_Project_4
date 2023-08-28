@@ -5,7 +5,8 @@ const {
     getFriendsList,
     addFriend,
     changePicture,
-    getUserInfo
+    getUserInfo,
+    getAllUsers, removeFriend
 } = require("../controllers/userController");
 
 const authentication = require("../middleware/authentication");
@@ -17,5 +18,6 @@ userRouter.get("/friends", authentication, getFriendsList);
 userRouter.put("/addfriend/:friendId", authentication, addFriend);
 userRouter.put("/changepicture", authentication, changePicture);
 userRouter.get("/:userId", authentication, getUserInfo);
-
+userRouter.get("/all/users", authentication, getAllUsers);
+userRouter.put("/removefriend/:friendId", authentication, removeFriend);
 module.exports = userRouter;

@@ -42,7 +42,7 @@ const MyProfile = () => {
 
     }
 
-    const postContectHandle = (event) => {
+    const postContentHandle = (event) => {
         setPostContent(event.target.value);
     }
 
@@ -51,7 +51,7 @@ const MyProfile = () => {
             if (postContent !== "") {
                 try {
                     const result = await axios.post("http://localhost:5000/post/", { description: postContent, picture: "" }, { headers: { Authorization: `Bearer ${user.token}` } });
-                    getMyPosts();
+                    setMyPosts([result.data.post, ...myPosts]);
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -104,8 +104,8 @@ const MyProfile = () => {
                     </div>
                     <div id="posts-column">
                         <div id="add-post">
-                            <img id = "new-post-personal-picture"src={user.URL}></img>
-                            <textarea id="new-post-textarea" placeholder="What's on your mind?" onChange={ postContectHandle }></textarea>
+                            <img className = "new-post-personal-picture"src={user.URL}></img>
+                            <textarea id="new-post-textarea" placeholder="What's on your mind?" onChange={ postContentHandle }></textarea>
                             <button onClick={postHandle}>Post</button>
                         </div>
                         <div id = "my-posts">
@@ -113,10 +113,13 @@ const MyProfile = () => {
                                 return (
                                     <div key={ element._id } className='posts'>
                                         <div id = "my-post-author-info">
-                                            <img id="new-post-personal-picture" src={ user.URL }></img>
-                                            <h6>{ name }</h6>
+                                            <img className="new-post-personal-picture" src={ user.URL }></img>
+                                            <h6 className='post-author'>{ name }</h6>
                                         </div>
-                                        
+                                        <div>
+                                            <p>{ element.description }</p>
+                                            <img className = "post-image" src={ element.picture } />
+                                        </div>
                                     
                                     </div>
                                 )

@@ -73,7 +73,7 @@
     margin: auto;
     width: 80%;
 }
-#new-post-personal-picture{
+.new-post-personal-picture{
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -89,4 +89,21 @@
 #my-post-author-info{
     border: blue solid;
     display: flex;
+}
+
+.posts{
+    width: 80.5%;
+    margin: auto;
+    border: yellow solid;
+}
+
+.post-author{
+    font-family: "Chivo";
+    align-self: center;
+    margin-left: 5px;
+}
+
+.post-image{
+    width: 100%;
+    border-radius: 20px;
 }

@@ -40,7 +40,7 @@ const Register = () => {
             try {
                 const registerObj = { firstName, lastName, email, password, picture, country, location, bio, DOB};
                 const result = await axios.post("http://localhost:5000/user/Register", registerObj);
-                setMessage(result.data.error);
+                setMessage(result.data.message);
                 if (result.data.success) {
                     setTimeout(() => {
                         setMessage("");

@@ -5,6 +5,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 90px;
+    overflow: visible;
 }
 #profile-picture{
     height: 80px;
@@ -12,4 +14,29 @@
     border-radius: 50%;
     border: red solid;
     display: block;
+}
+
+#search-bar-outer {
+    position: relative; /* Set the container to relative position */
+}
+
+#search-list {
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    max-height: 150px; 
+    overflow-y: auto; 
+    background-color: white;
+    border: 1px solid #ccc; 
+    border-top: none;
+    display: none; 
+    width: 100%
+}
+
+#search-bar-inner:focus-within #search-list {
+    display: block;
+}
+
+#item:hover{
+    background-color: rgb(167, 167, 167);
 }
