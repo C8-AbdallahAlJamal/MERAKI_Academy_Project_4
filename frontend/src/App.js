@@ -3,6 +3,7 @@ import Register from "./components/Register/Register";
 import Home from "./components/Home/Home";
 import Dashboard from "./components/Dashboard/Dashboard";
 import MyProfile from "./components/MyProfile/MyProfile";
+import Profile from "./components/Profile/Profile";
 import React, { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { createContext, useState } from "react";
@@ -20,7 +21,7 @@ const App = () => {
     const [friends, setFriends] = useState([])
     useEffect(() => {
         if (token) {
-            navigate("/Dashboard");
+            // navigate("/Dashboard");
             getMyInfo();
         }
     }, [token]);
@@ -41,7 +42,9 @@ const App = () => {
                     <Route path="/" element={ <Home /> } />
                     <Route path="/Register" element={ <Register /> } />
                     <Route path="/Dashboard" element={ <Dashboard /> } />
-                    <Route path="MyProfile" element={ <MyProfile /> } />
+                    <Route path="/profile/:userId" element={ <Profile /> } />
+                    <Route/>
+                    <Route path="/MyProfile" element={ <MyProfile /> } />
                 </Routes>
             </UserContext.Provider>
         </div>

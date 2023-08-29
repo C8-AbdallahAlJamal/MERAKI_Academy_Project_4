@@ -110,7 +110,7 @@ const Unlike = async (req, res) => {
             if (result.numberOfLikes < 0) {
                 result.numberOfLikes = 0;
                 result.save();
-            } 
+            }
             res.json({
                 success: true,
                 message: "Like removed",
@@ -182,7 +182,7 @@ const getAllPosts = async (req, res) => {
         const result = await postModel.find({});
         res.json({
             success: true,
-            posts: result.length? result: "No Posts Available"
+            posts: result.length ? result : "No Posts Available"
         })
     } catch (error) {
         res.json({
@@ -208,8 +208,31 @@ const getMyPosts = async (req, res) => {
     }
 }
 
-const changePicture = (req, res) => {
-    
+
+
+const getPostByUserId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const result = await postModel.find({ author: userId });
+        if (result.length) {
+            res.json({
+                success: true,
+                message: "All Posts",
+                posts: result
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "No Posts Found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        })
+    }
 }
 
 module.exports = {
@@ -222,5 +245,5 @@ module.exports = {
     removeComment,
     getAllPosts,
     getMyPosts,
-    changePicture
+    getPostByUserId
 }

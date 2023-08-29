@@ -1,7 +1,6 @@
 const roleModel = require("../models/rolesSchema");
 
 const addNewRole = async(req,res) => {
-    console.log("f")
     const {role, permissions} = req.body;
     const newRole = new roleModel({role, permissions});
     try {

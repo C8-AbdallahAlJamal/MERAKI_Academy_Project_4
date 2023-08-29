@@ -6,6 +6,9 @@ import { UserContext } from '../../App';
 import axios from 'axios';
 import { useState } from 'react';
 
+import { AiFillLike } from "react-icons/ai";
+import { FaRegCommentAlt } from "react-icons/fa";
+
 const MyProfile = () => {
     const navigate = useNavigate();
     const user = useContext(UserContext);
@@ -28,18 +31,21 @@ const MyProfile = () => {
     }, [])
 
     const getUserInfo = async () => {
-        const result = await axios.get(`http://localhost:5000/user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
-        if (result.data.success) {
-            setName(result.data.userInfo.firstName + " " + result.data.userInfo.lastName);
-            setNumOfFriends(result.data.userInfo.friends.length);
-            setBio(result.data.userInfo.bio);
-            setCountry(result.data.userInfo.country);
-            setLocation(result.data.userInfo.location);
-            setDOB(result.data.userInfo.DOB.split("T")[0]);
-        } else {
-            navigate("/");
+        try {
+            const result = await axios.get(`http://localhost:5000/user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            if (result.data.success) {
+                setName(result.data.userInfo.firstName + " " + result.data.userInfo.lastName);
+                setNumOfFriends(result.data.userInfo.friends.length);
+                setBio(result.data.userInfo.bio);
+                setCountry(result.data.userInfo.country);
+                setLocation(result.data.userInfo.location);
+                setDOB(result.data.userInfo.DOB.split("T")[0]);
+            } else {
+                navigate("/");
+            }
+        } catch (error) {
+            console.log(error.message);
         }
-
     }
 
     const postContentHandle = (event) => {
@@ -56,7 +62,7 @@ const MyProfile = () => {
                     console.log(error.message);
                 }
             }
-            
+
         } else {
             navigate("/");
         }
@@ -68,6 +74,15 @@ const MyProfile = () => {
             result.data.posts.reverse();
             setMyPosts(result.data.posts);
 
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const Like = async (postId) => {
+        try {
+            const result = await axios.put(`http://localhost:5000/post/${postId}/like`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            
         } catch (error) {
             console.log(error.message)
         }
@@ -104,26 +119,34 @@ const MyProfile = () => {
                     </div>
                     <div id="posts-column">
                         <div id="add-post">
-                            <img className = "new-post-personal-picture"src={user.URL}></img>
+                            <img className="new-post-personal-picture" src={ user.URL }></img>
                             <textarea id="new-post-textarea" placeholder="What's on your mind?" onChange={ postContentHandle }></textarea>
-                            <button onClick={postHandle}>Post</button>
+                            <button onClick={ postHandle }>Post</button>
                         </div>
-                        <div id = "my-posts">
-                            { myPosts&&myPosts.map((element) => {
+                        <div id="my-posts">
+                            { myPosts && myPosts.map((element) => {
                                 return (
                                     <div key={ element._id } className='posts'>
-                                        <div id = "my-post-author-info">
+                                        <div id="my-post-author-info">
                                             <img className="new-post-personal-picture" src={ user.URL }></img>
                                             <h6 className='post-author'>{ name }</h6>
                                         </div>
-                                        <div>
+                                        <div id = "post-content">
                                             <p>{ element.description }</p>
-                                            <img className = "post-image" src={ element.picture } />
+                                            <img className="post-image" src={ element.picture } />
                                         </div>
-                                    
+                                        <div id="like-and-comment">
+                                            <AiFillLike onClick={()=>{(Like(element._id))}}/>
+                                            <span>{ element.numberOfLikes }Likes</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chat" viewBox="0 0 16 16">
+                                                <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z" />
+                                            </svg>
+
+                                        </div>
+
                                     </div>
                                 )
-                            })}
+                            }) }
                         </div>
                     </div>
 

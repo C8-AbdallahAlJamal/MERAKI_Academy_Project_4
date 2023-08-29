@@ -145,7 +145,7 @@ const changePicture = async (req, res) => {
     }
 }
 
-const getUserInfo = async (req, res) => {
+const getMyInfo = async (req, res) => {
     const { userId } = req.token;
     try {
         const result = await userModel.findById(userId).select("-password -role").populate("friends");
@@ -196,13 +196,38 @@ const getAllUsers = async (req, res) => {
 const removeFriend = async (req, res) => {
     const { userId } = req.token;
     const { friendId } = req.params;
-    const result = await userModel.findByIdAndUpdate(userId, { $pull: { friends: friendId } }, { new: true });
+    const result = await userModel.findByIdAndUpdate(userId, { $pull: { friends: friendId } }, { new: true }).populate("friends");
     res.json({
         success: true,
         message: "Friend Removed",
         userFriendsList: result.friends
     })
-    console.log(result);
+}
+
+const getUserInfo = async(req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const result = await userModel.findOne({ _id: userId });
+        if (result) {
+            res.json({
+                success: true,
+                message: "User found",
+                result
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "User Not Found"
+            })
+        }
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Serve Error",
+            error: error.message
+        })
+    }
 }
 
 module.exports = {
@@ -211,7 +236,8 @@ module.exports = {
     getFriendsList,
     addFriend,
     changePicture,
-    getUserInfo,
+    getMyInfo,
     getAllUsers,
-    removeFriend
+    removeFriend,
+    getUserInfo
 }
