@@ -43,7 +43,7 @@ const App = () => {
                     <Route path="/Register" element={ <Register /> } />
                     <Route path="/Dashboard" element={ <Dashboard /> } />
                     <Route path="/profile/:userId" element={ <Profile /> } />
-                    <Route/>
+                    <Route path="*" element={ <h1>404 NOT FOUND</h1> } />
                     <Route path="/MyProfile" element={ <MyProfile /> } />
                 </Routes>
             </UserContext.Provider>

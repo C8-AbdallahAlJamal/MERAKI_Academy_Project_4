@@ -1,5 +1,6 @@
 const postModel = require("../models/postsSchema");
 const commentModel = require("../models/commentsSchema");
+const userModel = require("../models/usersSchema");
 const createNewPost = async (req, res) => {
     const { description, picture } = req.body;
     const author = req.token.userId;
@@ -9,7 +10,7 @@ const createNewPost = async (req, res) => {
         picture,
         comments: [],
         numberOfLikes: 0
-    })
+    });
     try {
         const post = await newPost.save();
         res.json({
@@ -140,12 +141,14 @@ const addComment = async (req, res) => {
             description,
             commenter
         });
-        await newComment.save();
+        const comment = await newComment.save();
+        const result2 = await commentModel.findOne({ _id: newComment._id }).populate("commenter")
         const result = await postModel.findOneAndUpdate({ _id: postId }, { $push: { comments: newComment._id } }, { new: true }).populate("comments");
         res.json({
             success: true,
             message: "Comment Added",
-            post: result
+            comment: result2,
+            result
         })
     } catch (error) {
         res.json({
@@ -178,11 +181,14 @@ const removeComment = async (req, res) => {
 }
 
 const getAllPosts = async (req, res) => {
+    const { userId } = req.token;
     try {
-        const result = await postModel.find({});
+        const user = await userModel.findOne({ _id: userId });
+        const friendsList = user.friends;
+        const result = await postModel.find({ $or: [{ author: { $in: user.friends } }, { author: userId }] }).sort({ _id: "descending" }).populate({ path: "comments", populate: { path: "commenter" }}).populate("author");
         res.json({
             success: true,
-            posts: result.length ? result : "No Posts Available"
+            posts: result.length ? result : []
         })
     } catch (error) {
         res.json({
@@ -195,10 +201,10 @@ const getAllPosts = async (req, res) => {
 const getMyPosts = async (req, res) => {
     const { userId } = req.token;
     try {
-        const result = await postModel.find({ author: userId });
+        const result = await postModel.find({ author: userId }).populate({ path: "comments", populate: { path: "commenter" } });
         res.json({
             success: true,
-            posts: result.length ? result : "No Posts Available"
+            posts: result.length ? result :[]
         })
     } catch (error) {
         res.json({
@@ -213,7 +219,7 @@ const getMyPosts = async (req, res) => {
 const getPostByUserId = async (req, res) => {
     const { userId } = req.params;
     try {
-        const result = await postModel.find({ author: userId });
+        const result = await postModel.find({ author: userId }).populate({ path: "comments", populate: { path: "commenter" } });
         if (result.length) {
             res.json({
                 success: true,
@@ -223,7 +229,7 @@ const getPostByUserId = async (req, res) => {
         } else {
             res.json({
                 success: false,
-                message: "No Posts Found"
+                message: []
             })
         }
     } catch (error) {

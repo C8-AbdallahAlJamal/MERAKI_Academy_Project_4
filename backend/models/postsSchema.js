@@ -6,6 +6,6 @@ const postsSchema = new mongoose.Schema({
     picture: {type: String},
     comments: [{type: mongoose.Schema.Types.ObjectId, ref: "Comment"}],
     numberOfLikes: {type: Number}
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model("Post", postsSchema);

@@ -8,7 +8,10 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { UserContext } from '../../App';
 import { useState } from 'react';
-import { useId } from 'react';
+import { AiFillLike } from "react-icons/ai";
+import { FaRegCommentAlt } from "react-icons/fa";
+import { Avatar } from '@mui/material';
+
 const Profile = () => {
     const user = useContext(UserContext);
     const navigate = useNavigate();
@@ -20,7 +23,9 @@ const Profile = () => {
     const [location, setLocation] = useState("");
     const [DOB, setDOB] = useState("");
     const [profilePicture, setProfilePicture] = useState("");
-    const [myPosts, setMyPosts] = useState("");
+    const [posts, setPosts] = useState("");
+    const [isClicked, setIsClicked] = useState("");
+    const [comment, setComment] = useState("");
 
     useEffect(() => {
         if (localStorage.getItem("Token")) {
@@ -56,13 +61,53 @@ const Profile = () => {
             const result = await axios.get(`http://localhost:5000/post/${userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             if (result.data.success) {
                 result.data.posts.reverse();
-                setMyPosts(result.data.posts);
+                setPosts(result.data.posts);
             } else {
-                setMyPosts("");
+                setPosts("");
             }
 
         } catch (error) {
             console.log(error.message);
+        }
+    }
+
+    const Like = async (postId) => {
+        try {
+            const result = await axios.put(`http://localhost:5000/post/${postId}/like`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            setPosts(posts.map((element) => {
+                if (result.data.post._id === element._id) {
+                    element.numberOfLikes++;
+                }
+                return element;
+            }));
+
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const addComment = async (event) => {
+        const description = comment;
+        if (comment != "") {
+            try {
+                const result = await axios.post(`http://localhost:5000/post/${event.target.name}/comment`, { description }, { headers: { Authorization: `Bearer ${user.token}` } });
+                setPosts(posts.map((element) => {
+                    if (result.data.result._id === element._id) {
+                        element.comments.push(result.data.comment);
+                    }
+                    return element;
+                }))
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+    }
+
+    const goToUserProfile = (profileId) => {
+        if (localStorage.getItem("Token")) {
+            navigate(`/profile/${profileId}`);
+        } else {
+            navigate("/");
         }
     }
 
@@ -71,9 +116,9 @@ const Profile = () => {
             <div id="my-profile-page">
                 <Navigation />
                 <div id="profile-picture-div">
-                    <img id="my-profile-picture" src={ profilePicture } />
+                    <Avatar id="my-profile-picture" src={ profilePicture } />
                     <h2 id="name">{ name }</h2>
-                    <span>{ numOfFriends } Friends</span>
+                    <span>{ numOfFriends } Following</span>
                 </div>
 
                 <div id="columns">
@@ -98,18 +143,55 @@ const Profile = () => {
 
                     <div id="posts-column">
                         <div id="my-posts">
-                            { myPosts && myPosts.map((element) => {
+                            { posts && posts.map((element) => {
                                 return (
                                     <div key={ element._id } className='posts'>
                                         <div id="my-post-author-info">
-                                            <img className="new-post-personal-picture" src={ profilePicture }></img>
+                                            <Avatar className="new-post-personal-picture" src={ profilePicture }/>
                                             <h6 className='post-author'>{ name }</h6>
                                         </div>
-                                        <div>
+                                        <div id="post-content">
                                             <p>{ element.description }</p>
                                             <img className="post-image" src={ element.picture } />
                                         </div>
-
+                                        <div id="like-and-comment">
+                                            <AiFillLike onClick={ () => { (Like(element._id)) } } />
+                                            <span>{ element.numberOfLikes }Likes</span>
+                                            {
+                                                isClicked === element._id ?
+                                                    <div>
+                                                        <FaRegCommentAlt onClick={ () => { setIsClicked("") } } />
+                                                        <span>{ element.comments.length } Comments</span>
+                                                    </div>
+                                                    :
+                                                    <div>
+                                                        <FaRegCommentAlt onClick={ () => { setIsClicked(element._id) } } />
+                                                        <span>{ element.comments.length } Comments</span>
+                                                    </div>
+                                            }
+                                        </div>
+                                        <div id="comment-section">
+                                            {
+                                                isClicked === element._id ?
+                                                    <div id="comments">
+                                                        <div id="new-comment">
+                                                            <input placeholder="Add Comment" onChange={ (event) => { setComment(event.target.value) } } />
+                                                            <button name={ element._id } onClick={ addComment }>Comment</button>
+                                                        </div>
+                                                        { element.comments.map((elem) => {
+                                                            return (
+                                                                <div key={ elem._id }>
+                                                                    <Avatar onClick={ () => { goToUserProfile(elem.commenter._id) } } className='new-post-personal-picture' src={ elem.commenter.picture } />
+                                                                    <h6 >{ elem.commenter.firstName + " " + elem.commenter.lastName }</h6>
+                                                                    <h5>{ elem.description }</h5>
+                                                                </div>
+                                                            )
+                                                        }) }
+                                                    </div>
+                                                    :
+                                                    ""
+                                            }
+                                        </div>
                                     </div>
                                 )
                             }) }

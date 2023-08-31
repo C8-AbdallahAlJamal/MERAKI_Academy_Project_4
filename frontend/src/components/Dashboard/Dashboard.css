@@ -1,6 +1,16 @@
 #dashboard{
     border: solid red;
-    max-width: 1300px;
+    max-width: 80%;
     margin: auto;
     min-height: 100vh;
+    max-width: 1300px;
+    position: relative;
+}
+
+#posts{
+    margin: auto;
+    margin-top: 5px;
+    border: solid blue;
+    max-width: 65%;
+    min-height: 100%;
 }
