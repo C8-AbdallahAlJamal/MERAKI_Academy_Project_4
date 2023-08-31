@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import "./Register.css"
 import { useState } from 'react'
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { Avatar } from '@mui/material';
 const Register = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -12,11 +13,16 @@ const Register = () => {
     const [error, setError] = useState(null);
     const [passError, setPassError] = useState(null);
     const [message, setMessage] = useState("");
-    const [picture] = useState("");
+
+    const [picture, setPicture] = useState("");
+    const [url, setUrl] = useState("");
+
     const [country, setCountry] = useState("");
     const [location, setLocation] = useState("");
     const [bio, setBio] = useState("");
     const [DOB, setDOB] = useState("");
+    const imageInputRef = useRef(null);
+
 
     const navigate = useNavigate();
 
@@ -28,8 +34,18 @@ const Register = () => {
         return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)
     }
 
-    const addPicture = (event) => {
-        console.log(event.target.value)
+    const clickInput = () => {
+        imageInputRef.current.click();
+    }
+
+    const addPicture = (file) => {
+        const data = new FormData();
+        data.append("file", file);
+        data.append("upload_preset", "profilePicture");
+        data.append("cloud_name", "dbkfrtdjm");
+        fetch("https://api.cloudinary.com/v1_1/dbkfrtdjm/image/upload", { method: "post", body: data }).then(resp => resp.json()).then(data => {
+            setUrl(data.url)
+        }).catch(err => console.log(err));
     }
 
     const registerHandle = async (event) => {
@@ -38,7 +54,7 @@ const Register = () => {
         } else {
             setMessage("");
             try {
-                const registerObj = { firstName, lastName, email, password, picture, country, location, bio, DOB};
+                const registerObj = { firstName, lastName, email, password, picture: url, country, location, bio, DOB};
                 const result = await axios.post("http://localhost:5000/user/Register", registerObj);
                 setMessage(result.data.message);
                 if (result.data.success) {
@@ -50,8 +66,6 @@ const Register = () => {
             } catch (error) {
                 console.log(error.message)
             }
-
-
         }
     }
 
@@ -75,11 +89,8 @@ const Register = () => {
     return (
         <div id="container">
             <div id="register-page">
-
-                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16" onClick={ addPicture }>
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                    <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                </svg>
+                <input type='file' ref={ imageInputRef } hidden onChange={(event)=>{addPicture(event.target.files[0])}}/>
+                <Avatar onClick={ clickInput } src={ url } />
                 <input type="text" placeholder='First Name' onChange={ (event) => {
                     setFirstName(event.target.value);
                 } }></input>

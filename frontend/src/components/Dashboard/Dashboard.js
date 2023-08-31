@@ -94,7 +94,6 @@ const Dashboard = () => {
             if (postContent !== "") {
                 try {
                     const result = await axios.post("http://localhost:5000/post/", { description: postContent, picture: "" }, { headers: { Authorization: `Bearer ${user.token}` } });
-                    console.log(result);
                     setPosts([result.data.post, ...posts]);
                 } catch (error) {
                     console.log(error.message);
@@ -122,7 +121,7 @@ const Dashboard = () => {
                             return (
                                 <div key={ element._id } className='posts'>
                                     <div id='my-post-author-info'>
-                                        {console.log(element)}
+                                        
                                         <Avatar className='new-post-personal-picture' src={ element.author.picture } onClick={ () => { goToUserProfile(element.author._id) } } />
                                         <h6 className='post-author'>{ element.author.firstName + " " + element.author.lastName }</h6>
                                     </div>

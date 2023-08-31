@@ -12,7 +12,9 @@ const createNewPost = async (req, res) => {
         numberOfLikes: 0
     });
     try {
-        const post = await newPost.save();
+        const post = await newPost.save().then(post =>
+            post.populate("author")
+        );
         res.json({
             success: true,
             message: "Post Created",

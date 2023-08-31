@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import "./MyProfile.css";
 import Navigation from '../Navigation/Navigation';
 import { useNavigate } from "react-router-dom";
@@ -22,8 +22,9 @@ const MyProfile = () => {
     const [postContent, setPostContent] = useState("");
     const [myPosts, setMyPosts] = useState("");
     const [comment, setComment] = useState("");
-
+    const imageInputRef = useRef(null);
     const [isClicked, setIsClicked] = useState("");
+    const [picture, setPicture] = useState("");
 
     useEffect(() => {
         if (localStorage.getItem("Token")) {
@@ -44,6 +45,7 @@ const MyProfile = () => {
                 setCountry(result.data.userInfo.country);
                 setLocation(result.data.userInfo.location);
                 setDOB(result.data.userInfo.DOB.split("T")[0]);
+                setPicture(result.data.userInfo.picture);
             } else {
                 navigate("/");
             }
@@ -115,12 +117,29 @@ const MyProfile = () => {
         }
     }
 
+    const clickInput = () => {
+        imageInputRef.current.click();
+    }
+
+    const addPicture = async (file) => {
+        const data = new FormData();
+        data.append("file", file);
+        data.append("upload_preset", "profilePicture");
+        data.append("cloud_name", "dbkfrtdjm");
+        fetch("https://api.cloudinary.com/v1_1/dbkfrtdjm/image/upload", { method: "post", body: data }).then(resp => resp.json()).then(async data => {
+            setPicture(data.url)
+            user.setURL(data.url);
+            const result = await axios.put("http://localhost:5000/user/changepicture", { picture: data.url }, { headers: { Authorization: `Bearer ${user.token}` } });
+        }).catch(err => console.log(err));
+    }
+
     return (
         localStorage.getItem("Token") ?
             <div id="my-profile-page">
                 <Navigation />
                 <div id="profile-picture-div">
-                    <Avatar id="my-profile-picture" src={ user.URL } />
+                    <input type='file' ref={ imageInputRef } hidden onChange={ (event) => { addPicture(event.target.files[0]) } } />
+                    <Avatar onClick={ clickInput } id="my-profile-picture" src={ picture } />
                     <h2 id="name">{ name }</h2>
                     <span>{ numOfFriends } Following</span>
                 </div>
@@ -146,7 +165,7 @@ const MyProfile = () => {
                     </div>
                     <div id="posts-column">
                         <div id="add-post">
-                            <Avatar className="new-post-personal-picture" src={ user.URL }/>
+                            <Avatar className="new-post-personal-picture" src={ picture }/>
                             <textarea id="new-post-textarea" placeholder="What's on your mind?" onChange={ postContentHandle }></textarea>
                             <button onClick={ postHandle }>Post</button>
                         </div>
@@ -155,7 +174,7 @@ const MyProfile = () => {
                                 return (
                                     <div key={ element._id } className='posts'>
                                         <div id="my-post-author-info">
-                                            <Avatar className="new-post-personal-picture" src={ user.URL }/>
+                                            <Avatar className="new-post-personal-picture" src={ picture }/>
                                             <h6 className='post-author'>{ name }</h6>
                                         </div>
                                         <div id="post-content">

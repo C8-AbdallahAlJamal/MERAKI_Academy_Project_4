@@ -8,14 +8,14 @@ import React, { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { createContext, useState } from "react";
 import axios from "axios";
-//import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const UserContext = createContext();
 
 const App = () => {
+    
+
     const [token, setToken] = useState(localStorage.getItem("Token"));
     const [userId, setUserId] = useState(localStorage.getItem("userId"));
-    const navigate = useNavigate();
     const [URL, setURL] = useState("");
     const [myInfo, setMyInfo] = useState();
     const [friends, setFriends] = useState([])
