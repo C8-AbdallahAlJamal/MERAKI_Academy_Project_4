@@ -19,7 +19,6 @@ const Navigation = () => {
             const result = await axios.get(`http://localhost:5000/user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             if (result.data.success) {
                 user.setURL(result.data.userInfo.picture);
-
             } else {
                 navigate("/");
             }
@@ -79,8 +78,8 @@ const Navigation = () => {
     return (
         localStorage.getItem("Token") &&
         <div id="navigation">
-            <Avatar src={ user.URL } onClick={ goToMyProfile } />
-            <BiHomeAlt2 onClick={ homeButtonHandle } />
+            <Avatar src={ user.URL } onClick={ goToMyProfile } style={{cursor: "pointer"}}/>
+                <BiHomeAlt2 onClick={ homeButtonHandle } style={ { cursor: "pointer" } } />
             <div id="search-bar-outer">
                 <div id="search-bar-inner">
                     <input onClick={ getAllUsers } type="text" onChange={ (event) => { setValue(event.target.value) } } placeholder='Search...' />
@@ -91,8 +90,8 @@ const Navigation = () => {
                             return fullName.includes(word);
                         }).map((element) => {
                             return (
-                                <div style={ { cursor: "pointer" } } id="item" key={ element._id }>
-                                    <h4 onMouseDown={ () => { navigate(`/profile/${element._id}`) } }>{ element.firstName + " " + element.lastName }</h4>
+                                <div id="item" key={ element._id }>
+                                    <h4 style={ { cursor: "pointer" } } onMouseDown={ () => { navigate(`/profile/${element._id}`) } }>{ element.firstName + " " + element.lastName }</h4>
 
                                     {
                                         !user.friends.find((item) => { return item._id === element._id; }) ?
@@ -107,7 +106,7 @@ const Navigation = () => {
                     </div>
                 </div>
             </div>
-            <FiLogOut onClick={ handleLogOut } />
+                <FiLogOut style={ { cursor: "pointer" } } onClick={ handleLogOut } />
         </div>
     )
 }

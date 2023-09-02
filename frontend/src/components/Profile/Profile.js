@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { AiFillLike } from "react-icons/ai";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { Avatar } from '@mui/material';
+import { FaWindowClose } from "react-icons/fa";
 
 const Profile = () => {
     const user = useContext(UserContext);
@@ -46,7 +47,9 @@ const Profile = () => {
                 setBio(result.data.result.bio);
                 setCountry(result.data.result.country);
                 setLocation(result.data.result.location);
-                setDOB(result.data.result.DOB.split("T")[0]);
+                if (result.data.result.DOB) {
+                    setDOB(result.data.result.DOB.split("T")[0]);
+                }
                 setProfilePicture(result.data.result.picture);
             } else {
                 navigate("/");
@@ -111,6 +114,15 @@ const Profile = () => {
         }
     }
 
+    const deleteComment = async (postId, commentId) => {
+        try {
+            const result = await axios.delete(`http://localhost:5000/post/deletecomment/${postId}/${commentId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            getUserPosts();
+        } catch (error) {
+
+        }
+    }
+
     return (
         localStorage.getItem("Token") ?
             <div id="my-profile-page">
@@ -147,7 +159,7 @@ const Profile = () => {
                                 return (
                                     <div key={ element._id } className='posts'>
                                         <div id="my-post-author-info">
-                                            <Avatar className="new-post-personal-picture" src={ profilePicture }/>
+                                            <Avatar className="new-post-personal-picture" src={ profilePicture } />
                                             <h6 className='post-author'>{ name }</h6>
                                         </div>
                                         <div id="post-content">
@@ -183,6 +195,12 @@ const Profile = () => {
                                                                 <div key={ elem._id }>
                                                                     <Avatar onClick={ () => { goToUserProfile(elem.commenter._id) } } className='new-post-personal-picture' src={ elem.commenter.picture } />
                                                                     <h6 >{ elem.commenter.firstName + " " + elem.commenter.lastName }</h6>
+                                                                    {
+                                                                        elem.commenter._id === user.userId ?
+                                                                            <FaWindowClose style={ { cursor: "pointer" } } onClick={ () => { deleteComment(element._id, elem._id) } } />
+                                                                            :
+                                                                            ""
+                                                                    }
                                                                     <h5>{ elem.description }</h5>
                                                                 </div>
                                                             )

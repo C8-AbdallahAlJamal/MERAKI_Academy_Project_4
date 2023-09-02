@@ -54,22 +54,34 @@ const Home = () => {
     return (
         <div id="container">
             <div className="home-page">
-                <input type="email" placeholder="Email Address" value={ email } onChange={ (event) => {
-                    if (!isValidEmail(event.target.value)) {
-                        setError("Email is invalid");
-                    } else {
-                        setError(null);
-                    }
-                    setEmail(event.target.value);
-                } } onKeyDown={handleEnterButton}></input>
-                { error && email !== "" && <h5>{ error }</h5> }
-                <input type="password" placeholder="Password" onChange={ (event) => {
-                    setPassword(event.target.value);
-                } } onKeyDown={handleEnterButton}></input>
-                { message }
+                    <div id="email-and-password-inputs">
+                        <h1 id="login">LOGIN</h1>
+                        <div id="email-and-error-message">
+                            <input className='email-and-password-boxes' id="email-input" type="email" placeholder="Email Address" value={ email } onChange={ (event) => {
+                                if (!isValidEmail(event.target.value)) {
+                                    setError("Email is invalid");
+                                } else {
+                                    setError(null);
+                                }
+                                setEmail(event.target.value);
+                            } } onKeyDown={ handleEnterButton }></input>
+                            { error && email !== "" && <h5 className="error-message">{ error }</h5> }
+                        </div>
 
-                <button onClick={ loginHandle }>Login</button>
-                <button onClick={signUpHandle}>Sign Up</button>
+                        <div id="password-and-message">
+                            <input id="password-input" className='email-and-password-boxes' type="password" placeholder="Password" onChange={ (event) => {
+                                setPassword(event.target.value);
+                            } } onKeyDown={ handleEnterButton }></input>
+                        </div>
+                        <div id="login-button-and-message">
+                            <button id="login-button" style={ { cursor: "pointer" } } onClick={ loginHandle }>Login</button>
+                            { message ? <h5 className="error-message">{ message }</h5> : "" }
+                        </div>
+
+                    </div>
+                <div id="sign-up-container">
+                    <button id="sign-up-button" style={ { cursor: "pointer" } } onClick={ signUpHandle }>Sign Up</button>
+                </div>
             </div>
         </div>
     )

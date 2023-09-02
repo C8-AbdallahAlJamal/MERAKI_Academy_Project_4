@@ -33,6 +33,7 @@ const removePostById = async (req, res) => {
     const { postId } = req.params;
     try {
         const post = await postModel.findOneAndDelete({ _id: postId });
+        const result = await commentModel.deleteMany({ _id: { $in: post.comments } });
         if (post) {
             res.json({
                 success: true,
@@ -164,7 +165,6 @@ const addComment = async (req, res) => {
 
 const removeComment = async (req, res) => {
     const { postId, commentId } = req.params;
-
     try {
         const post = await postModel.findByIdAndUpdate({ _id: postId }, { $pull: { comments: commentId } }, { new: true }).populate("comments");
         await commentModel.findOneAndDelete({ _id: commentId });
@@ -186,8 +186,7 @@ const getAllPosts = async (req, res) => {
     const { userId } = req.token;
     try {
         const user = await userModel.findOne({ _id: userId });
-        const friendsList = user.friends;
-        const result = await postModel.find({ $or: [{ author: { $in: user.friends } }, { author: userId }] }).sort({ _id: "descending" }).populate({ path: "comments", populate: { path: "commenter" }}).populate("author");
+        const result = await postModel.find({ $or: [{ author: { $in: user.friends } }, { author: userId }] }).sort({ _id: "descending" }).populate({ path: "comments", populate: { path: "commenter" } }).populate("author");
         res.json({
             success: true,
             posts: result.length ? result : []
@@ -206,7 +205,7 @@ const getMyPosts = async (req, res) => {
         const result = await postModel.find({ author: userId }).populate({ path: "comments", populate: { path: "commenter" } });
         res.json({
             success: true,
-            posts: result.length ? result :[]
+            posts: result.length ? result : []
         })
     } catch (error) {
         res.json({

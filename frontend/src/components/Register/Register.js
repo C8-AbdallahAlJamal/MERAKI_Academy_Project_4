@@ -61,7 +61,7 @@ const Register = () => {
                     setTimeout(() => {
                         setMessage("");
                         navigate("/");
-                    }, 2000)
+                    }, 1000)
                 }
             } catch (error) {
                 console.log(error.message)
@@ -86,24 +86,30 @@ const Register = () => {
         return email === "" || error || firstName === "" || lastName === "" || password === "" || passError;
     }
 
+    const handleEnterButton = (event) => {
+        if (event.key === "Enter") {
+            registerHandle();
+        }
+    }
+
     return (
         <div id="container">
             <div id="register-page">
                 <input type='file' ref={ imageInputRef } hidden onChange={(event)=>{addPicture(event.target.files[0])}}/>
-                <Avatar onClick={ clickInput } src={ url } />
-                <input type="text" placeholder='First Name' onChange={ (event) => {
+                <Avatar id = "register-picture" onClick={ clickInput } src={ url } style={{cursor: "pointer"}}/>
+                <input className="register-inputs" type="text" placeholder='First Name' onChange={ (event) => {
                     setFirstName(event.target.value);
                 } }></input>
 
-                <input type="text" placeholder='Last Name' onChange={ (event) => {
+                <input className="register-inputs" type="text" placeholder='Last Name' onChange={ (event) => {
                     setLastName(event.target.value);
                 } }></input>
 
-                <input type="text" placeholder='Country' onChange={ (event) => {
+                <input className="register-inputs" type="text" placeholder='Country' onChange={ (event) => {
                     setLocation(event.target.value);
                 } } />
 
-                <input type="text" placeholder='Bio' onChange={ (event) => {
+                <input className="register-inputs" type="text" placeholder='Bio' onChange={ (event) => {
                     setBio(event.target.value);
                 } } />
                 
@@ -111,25 +117,25 @@ const Register = () => {
                     setDOB(event.target.value);
                 } } />
 
-                <input type="text" placeholder='Location' onChange={ (event) => {
+                <input className="register-inputs" type="text" placeholder='Location' onChange={ (event) => {
                     setCountry(event.target.value);
                 } } />
 
-                <input type="email" placeholder='Email Address' onChange={ (event) => {
+                <input className="register-inputs" onKeyDown={ handleEnterButton } type="email" placeholder='Email Address' onChange={ (event) => {
                     if (!isValidEmail(event.target.value)) {
                         setError("Invalid Email");
                     } else {
                         setError(null);
                     }
                     setEmail(event.target.value);
-                } }></input>
+                } }/>
                 { error && email !== "" && <h5>{ error }</h5> }
 
-                <input type="password" placeholder='Password' onChange={ passwordHandle }></input>
+                <input className="register-inputs" onKeyDown={ handleEnterButton } type="password" placeholder='Password' onChange={ passwordHandle }></input>
 
                 { passError && password !== "" && <h5>{ passError }</h5> }
 
-                <button disabled={ buttonHandleBoolean() } onClick={ registerHandle }>Register</button>
+                <button id = "register-button" style={ { cursor: "pointer" } } disabled={ buttonHandleBoolean() } onClick={ registerHandle }>Register</button>
                 { message }
             </div>
         </div>

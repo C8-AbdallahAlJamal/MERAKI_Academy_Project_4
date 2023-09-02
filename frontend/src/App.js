@@ -21,7 +21,6 @@ const App = () => {
     const [friends, setFriends] = useState([])
     useEffect(() => {
         if (token) {
-            // navigate("/Dashboard");
             getMyInfo();
         }
     }, [token]);

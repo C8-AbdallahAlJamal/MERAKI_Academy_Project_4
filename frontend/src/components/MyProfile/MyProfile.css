@@ -116,3 +116,7 @@
 #post-content{
     text-align: center;
 }
+
+#commenter-info{
+    display: flex;
+}

@@ -9,7 +9,7 @@ postRouter.put("/:postId", authentication, updatePostById);
 postRouter.put("/:postId/like", authentication, Like);
 postRouter.put("/:postId/unlike", authentication, Unlike);
 postRouter.post("/:postId/comment", authentication, addComment);
-postRouter.delete("/:postId/:commentId", authentication, removeComment);
+postRouter.delete("/deletecomment/:postId/:commentId", authentication, removeComment);
 postRouter.get("/", authentication, getAllPosts);
 postRouter.get("/myposts", authentication, getMyPosts);
 postRouter.get("/:userId", authentication, getPostByUserId);

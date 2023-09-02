@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from '../../App';
 import axios from 'axios';
 import { useState } from 'react';
-
+import { FaWindowClose } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { Avatar } from '@mui/material';
@@ -44,7 +44,9 @@ const MyProfile = () => {
                 setBio(result.data.userInfo.bio);
                 setCountry(result.data.userInfo.country);
                 setLocation(result.data.userInfo.location);
-                setDOB(result.data.userInfo.DOB.split("T")[0]);
+                if (result.data.userInfo.DOB) {
+                    setDOB(result.data.userInfo.DOB.split("T")[0]);
+                }
                 setPicture(result.data.userInfo.picture);
             } else {
                 navigate("/");
@@ -133,13 +135,32 @@ const MyProfile = () => {
         }).catch(err => console.log(err));
     }
 
+    const deletePost = async (postId) => {
+        try {
+            const result = await axios.delete(`http://localhost:5000/post/${postId}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            getMyPosts();
+        } catch (error) {
+            console.log(error.message)
+        }
+        
+    }
+
+    const deleteComment = async (postId, commentId) => {
+        try {
+            const result = await axios.delete(`http://localhost:5000/post/deletecomment/${postId}/${commentId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            getMyPosts();
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     return (
         localStorage.getItem("Token") ?
             <div id="my-profile-page">
                 <Navigation />
                 <div id="profile-picture-div">
                     <input type='file' ref={ imageInputRef } hidden onChange={ (event) => { addPicture(event.target.files[0]) } } />
-                    <Avatar onClick={ clickInput } id="my-profile-picture" src={ picture } />
+                    <Avatar style={ { cursor: "pointer" } } onClick={ clickInput } id="my-profile-picture" src={ picture } />
                     <h2 id="name">{ name }</h2>
                     <span>{ numOfFriends } Following</span>
                 </div>
@@ -165,34 +186,35 @@ const MyProfile = () => {
                     </div>
                     <div id="posts-column">
                         <div id="add-post">
-                            <Avatar className="new-post-personal-picture" src={ picture }/>
+                            <Avatar style={ { cursor: "pointer" } } className="new-post-personal-picture" src={ picture } />
                             <textarea id="new-post-textarea" placeholder="What's on your mind?" onChange={ postContentHandle }></textarea>
-                            <button onClick={ postHandle }>Post</button>
+                            <button style={ { cursor: "pointer" } } onClick={ postHandle }>Post</button>
                         </div>
                         <div id="my-posts">
                             { myPosts && myPosts.map((element) => {
                                 return (
                                     <div key={ element._id } className='posts'>
                                         <div id="my-post-author-info">
-                                            <Avatar className="new-post-personal-picture" src={ picture }/>
+                                            <Avatar style={ { cursor: "pointer" } } className="new-post-personal-picture" src={ picture } />
                                             <h6 className='post-author'>{ name }</h6>
+                                            <FaWindowClose style={ { cursor: "pointer" } } onClick={()=>{deletePost(element._id)}}/>
                                         </div>
                                         <div id="post-content">
                                             <p>{ element.description }</p>
-                                            <img  className="post-image" src={ element.picture } />
+                                            <img className="post-image" src={ element.picture } />
                                         </div>
                                         <div id="like-and-comment">
-                                            <AiFillLike onClick={ () => { (Like(element._id)) } } />
+                                            <AiFillLike style={ { cursor: "pointer" } } onClick={ () => { (Like(element._id)) } } />
                                             <span>{ element.numberOfLikes }Likes</span>
                                             {
                                                 isClicked === element._id ?
                                                     <div>
-                                                        <FaRegCommentAlt onClick={ () => { setIsClicked("") } } />
-                                                        <span>{ element.numberOfLikes } Comments</span>
+                                                        <FaRegCommentAlt style={ { cursor: "pointer" } } onClick={ () => { setIsClicked("") } } />
+                                                        <span>{ element.comments.length } Comments</span>
                                                     </div>
                                                     :
                                                     <div>
-                                                        <FaRegCommentAlt onClick={ () => { setIsClicked(element._id) } } />
+                                                        <FaRegCommentAlt style={ { cursor: "pointer" } } onClick={ () => { setIsClicked(element._id) } } />
                                                         <span>{ element.comments.length } Comments</span>
                                                     </div>
                                             }
@@ -203,12 +225,17 @@ const MyProfile = () => {
                                                     <div id="comments">
                                                         <div id="new-comment">
                                                             <input onChange={ (event) => { setComment(event.target.value) } } />
-                                                            <button name={ element._id } onClick={ addComment }>Comment</button>
+                                                            <button style={ { cursor: "pointer" } } name={ element._id } onClick={ addComment }>Comment</button>
                                                         </div>
                                                         { element.comments.map((elem) => {
                                                             return (
-                                                                <div key={ elem._id }>
-                                                                    <Avatar className='new-post-personal-picture' src={ elem.commenter.picture } />
+                                                                <div key={ elem._id } id = "comment">
+                                                                    <div id="commenter-info">
+                                                                        <Avatar className='new-post-personal-picture' src={ elem.commenter.picture } />
+                                                                        <h6>{ elem.commenter.firstName + " " + elem.commenter.lastName }</h6>
+                                                                        <FaWindowClose style={ { cursor: "pointer" } } onClick={ () => { deleteComment(element._id, elem._id) } } />
+                                                                    </div>
+                                                                    
                                                                     <h5>{ elem.description }</h5>
                                                                 </div>
                                                             )
