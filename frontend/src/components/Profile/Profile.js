@@ -163,7 +163,7 @@ const Profile = () => {
                                             <h6 className='post-author'>{ name }</h6>
                                         </div>
                                         <div id="post-content">
-                                            <p id="comment-text">{ element.description }</p>
+                                            <p id="comment-text" style={ { fontFamily: "Chivo" } }>{ element.description }</p>
                                             { element.picture ? <img className="post-image" src={ element.picture } /> : "" }
                                         </div>
                                         <div id="like-and-comment">
@@ -205,13 +205,9 @@ const Profile = () => {
                                                                                 ""
                                                                         }
                                                                     </div>
-                                                                    {
-                                                                        elem.commenter._id === user.userId ?
-                                                                            <FaWindowClose style={ { cursor: "pointer" } } onClick={ () => { deleteComment(element._id, elem._id) } } />
-                                                                            :
-                                                                            ""
-                                                                    }
-                                                                    <h5>{ elem.description }</h5>
+                                                                    <div id="comment-text-div">
+                                                                        <h5 id="comment-text">{ elem.description }</h5>
+                                                                    </div>
                                                                 </div>
                                                             )
                                                         }) }
