@@ -1,5 +1,4 @@
 #dashboard{
-    border: solid red;
     max-width: 80%;
     margin: auto;
     min-height: 100vh;
@@ -10,7 +9,27 @@
 #posts{
     margin: auto;
     margin-top: 5px;
-    border: solid blue;
     max-width: 65%;
     min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 25px;
+    padding-bottom: 30px;
+}
+
+.dashboard-posts{
+    width: 90%;
+    background-color: #d4d4d4;
+    border-radius: 10px;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#delete-post-button-dashboard{
+    justify-self: end;
+    margin-right: 10px;
 }

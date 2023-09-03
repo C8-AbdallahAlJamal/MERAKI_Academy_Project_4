@@ -200,9 +200,9 @@ const MyProfile = () => {
                                             <FaWindowClose id="delete-post-button" style={ { cursor: "pointer" } } onClick={ () => { deletePost(element._id) } } />
                                         </div>
                                         <div id="post-content">
-                                            <p style={ { fontFamily: "Chivo" } }>{ element.description }</p>
-                                            { element.picture ? <img className="post-image" src={ element.picture } /> : ""}
-                                            
+                                            <p id="comment-text" style={ { fontFamily: "Chivo" } }>{ element.description }</p>
+                                            { element.picture ? <img className="post-image" src={ element.picture } /> : "" }
+
                                         </div>
                                         <div id="like-and-comment">
                                             <div className='aligning-reactions reaction-area'>
@@ -213,7 +213,7 @@ const MyProfile = () => {
                                                 isClicked === element._id ?
                                                     <div className='aligning-reactions reaction-area'>
                                                         <FaRegCommentAlt className='reaction-buttons-size' style={ { cursor: "pointer" } } onClick={ () => { setIsClicked("") } } />
-                                                        <span className = "margin-num-of-comments">{ element.comments.length } Comments</span>
+                                                        <span className="margin-num-of-comments">{ element.comments.length } Comments</span>
                                                     </div>
                                                     :
                                                     <div className='aligning-reactions reaction-area'>
@@ -227,8 +227,8 @@ const MyProfile = () => {
                                                 isClicked === element._id ?
                                                     <div id="comments">
                                                         <div id="new-comment">
-                                                            <input id = "new-comment-input" onChange={ (event) => { setComment(event.target.value) } } />
-                                                            <button id = "comment-button" style={ { cursor: "pointer" } } name={ element._id } onClick={ addComment }>Comment</button>
+                                                            <input placeholder='Comment...' id="new-comment-input" onChange={ (event) => { setComment(event.target.value) } } />
+                                                            <button id="comment-button" style={ { cursor: "pointer" } } name={ element._id } onClick={ addComment }>Comment</button>
                                                         </div>
                                                         { element.comments.map((elem) => {
                                                             return (
@@ -236,9 +236,11 @@ const MyProfile = () => {
                                                                     <div id="commenter-info">
                                                                         <Avatar className='new-post-personal-picture' src={ elem.commenter.picture } />
                                                                         <h6>{ elem.commenter.firstName + " " + elem.commenter.lastName }</h6>
-                                                                        <FaWindowClose style={ { cursor: "pointer" } } onClick={ () => { deleteComment(element._id, elem._id) } } />
+                                                                        <FaWindowClose id="delete-comment-button" style={ { cursor: "pointer" } } onClick={ () => { deleteComment(element._id, elem._id) } } />
                                                                     </div>
-                                                                    <h5>{ elem.description }</h5>
+                                                                    <div id="comment-text-div">
+                                                                        <h5 id="comment-text">{ elem.description }</h5>
+                                                                    </div>
                                                                 </div>
                                                             )
                                                         }) }

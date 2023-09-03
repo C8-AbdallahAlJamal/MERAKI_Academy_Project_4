@@ -130,7 +130,7 @@ const Profile = () => {
                 <div id="profile-picture-div">
                     <Avatar id="my-profile-picture" src={ profilePicture } />
                     <h2 id="name">{ name }</h2>
-                    <span>{ numOfFriends } Following</span>
+                    <span id = "friends-count">{ numOfFriends } Following</span>
                 </div>
 
                 <div id="columns">
@@ -163,22 +163,24 @@ const Profile = () => {
                                             <h6 className='post-author'>{ name }</h6>
                                         </div>
                                         <div id="post-content">
-                                            <p>{ element.description }</p>
-                                            <img className="post-image" src={ element.picture } />
+                                            <p id="comment-text">{ element.description }</p>
+                                            { element.picture ? <img className="post-image" src={ element.picture } /> : "" }
                                         </div>
                                         <div id="like-and-comment">
-                                            <AiFillLike onClick={ () => { (Like(element._id)) } } />
-                                            <span>{ element.numberOfLikes }Likes</span>
+                                            <div className='aligning-reactions reaction-area'>
+                                                <AiFillLike style={ { cursor: "pointer" } } className='reaction-buttons-size' onClick={ () => { (Like(element._id)) } } />
+                                                <span>{ element.numberOfLikes }Likes</span>
+                                            </div>
                                             {
                                                 isClicked === element._id ?
-                                                    <div>
-                                                        <FaRegCommentAlt onClick={ () => { setIsClicked("") } } />
-                                                        <span>{ element.comments.length } Comments</span>
+                                                    <div className='aligning-reactions reaction-area'>
+                                                        <FaRegCommentAlt className='reaction-buttons-size' style={ { cursor: "pointer" } } onClick={ () => { setIsClicked("") } } />
+                                                        <span className="margin-num-of-comments">{ element.comments.length } Comments</span>
                                                     </div>
                                                     :
-                                                    <div>
-                                                        <FaRegCommentAlt onClick={ () => { setIsClicked(element._id) } } />
-                                                        <span>{ element.comments.length } Comments</span>
+                                                    <div className='aligning-reactions reaction-area'>
+                                                        <FaRegCommentAlt className='reaction-buttons-size' style={ { cursor: "pointer" } } onClick={ () => { setIsClicked(element._id) } } />
+                                                        <span className="margin-num-of-comments">{ element.comments.length } Comments</span>
                                                     </div>
                                             }
                                         </div>
@@ -187,14 +189,22 @@ const Profile = () => {
                                                 isClicked === element._id ?
                                                     <div id="comments">
                                                         <div id="new-comment">
-                                                            <input placeholder="Add Comment" onChange={ (event) => { setComment(event.target.value) } } />
-                                                            <button name={ element._id } onClick={ addComment }>Comment</button>
+                                                            <input placeholder="Comment..." id="new-comment-input" onChange={ (event) => { setComment(event.target.value) } } />
+                                                            <button id="comment-button" style={ { cursor: "pointer" } } name={ element._id } onClick={ addComment }>Comment</button>
                                                         </div>
                                                         { element.comments.map((elem) => {
                                                             return (
-                                                                <div key={ elem._id }>
-                                                                    <Avatar onClick={ () => { goToUserProfile(elem.commenter._id) } } className='new-post-personal-picture' src={ elem.commenter.picture } />
-                                                                    <h6 >{ elem.commenter.firstName + " " + elem.commenter.lastName }</h6>
+                                                                <div key={ elem._id } id="comment">
+                                                                    <div id="commenter-info">
+                                                                        <Avatar onClick={ () => { goToUserProfile(elem.commenter._id) } } className='new-post-personal-picture' src={ elem.commenter.picture } />
+                                                                        <h6 >{ elem.commenter.firstName + " " + elem.commenter.lastName }</h6>
+                                                                        {
+                                                                            elem.commenter._id === user.userId ?
+                                                                                <FaWindowClose id="delete-comment-button" style={ { cursor: "pointer" } } onClick={ () => { deleteComment(element._id, elem._id) } } />
+                                                                                :
+                                                                                ""
+                                                                        }
+                                                                    </div>
                                                                     {
                                                                         elem.commenter._id === user.userId ?
                                                                             <FaWindowClose style={ { cursor: "pointer" } } onClick={ () => { deleteComment(element._id, elem._id) } } />
