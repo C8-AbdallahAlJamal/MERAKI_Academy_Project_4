@@ -78,8 +78,7 @@ const Navigation = () => {
     return (
         localStorage.getItem("Token") &&
         <div id="navigation">
-            <Avatar src={ user.URL } onClick={ goToMyProfile } style={{cursor: "pointer"}}/>
-                <BiHomeAlt2 onClick={ homeButtonHandle } style={ { cursor: "pointer" } } />
+            <BiHomeAlt2 onClick={ homeButtonHandle } style={ { cursor: "pointer" } } />
             <div id="search-bar-outer">
                 <div id="search-bar-inner">
                     <input onClick={ getAllUsers } type="text" onChange={ (event) => { setValue(event.target.value) } } placeholder='Search...' />
@@ -106,7 +105,9 @@ const Navigation = () => {
                     </div>
                 </div>
             </div>
-                <FiLogOut style={ { cursor: "pointer" } } onClick={ handleLogOut } />
+            <Avatar src={ user.URL } onClick={ goToMyProfile } style={ { cursor: "pointer" } } />
+
+            <FiLogOut style={ { cursor: "pointer" } } onClick={ handleLogOut } />
         </div>
     )
 }

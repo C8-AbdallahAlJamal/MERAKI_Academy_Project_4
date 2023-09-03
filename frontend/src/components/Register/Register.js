@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
 import "./Register.css"
 import { useState } from 'react'
 import { useEffect } from 'react';
@@ -54,7 +54,7 @@ const Register = () => {
         } else {
             setMessage("");
             try {
-                const registerObj = { firstName, lastName, email, password, picture: url, country, location, bio, DOB};
+                const registerObj = { firstName, lastName, email, password, picture: url, country, location, bio, DOB };
                 const result = await axios.post("http://localhost:5000/user/Register", registerObj);
                 setMessage(result.data.message);
                 if (result.data.success) {
@@ -95,8 +95,8 @@ const Register = () => {
     return (
         <div id="container">
             <div id="register-page">
-                <input type='file' ref={ imageInputRef } hidden onChange={(event)=>{addPicture(event.target.files[0])}}/>
-                <Avatar id = "register-picture" onClick={ clickInput } src={ url } style={{cursor: "pointer"}}/>
+                <input type='file' ref={ imageInputRef } hidden onChange={ (event) => { addPicture(event.target.files[0]) } } />
+                <Avatar id="register-picture" onClick={ clickInput } src={ url } style={ { cursor: "pointer" } } />
                 <input className="register-inputs" type="text" placeholder='First Name' onChange={ (event) => {
                     setFirstName(event.target.value);
                 } }></input>
@@ -112,8 +112,8 @@ const Register = () => {
                 <input className="register-inputs" type="text" placeholder='Bio' onChange={ (event) => {
                     setBio(event.target.value);
                 } } />
-                
-                <input type="date" placeholder='DOB' onChange={ (event) => {
+
+                <input id="date-input" style={ { cursor: "pointer" } } type="date" placeholder='DOB' onChange={ (event) => {
                     setDOB(event.target.value);
                 } } />
 
@@ -121,22 +121,25 @@ const Register = () => {
                     setCountry(event.target.value);
                 } } />
 
-                <input className="register-inputs" onKeyDown={ handleEnterButton } type="email" placeholder='Email Address' onChange={ (event) => {
-                    if (!isValidEmail(event.target.value)) {
-                        setError("Invalid Email");
-                    } else {
-                        setError(null);
-                    }
-                    setEmail(event.target.value);
-                } }/>
-                { error && email !== "" && <h5>{ error }</h5> }
-
-                <input className="register-inputs" onKeyDown={ handleEnterButton } type="password" placeholder='Password' onChange={ passwordHandle }></input>
-
-                { passError && password !== "" && <h5>{ passError }</h5> }
-
-                <button id = "register-button" style={ { cursor: "pointer" } } disabled={ buttonHandleBoolean() } onClick={ registerHandle }>Register</button>
-                { message }
+                <div id="email-and-input-register">
+                    <input id = "email-input-register" className="register-inputs"  onKeyDown={ handleEnterButton } type="email" placeholder='Email Address' onChange={ (event) => {
+                        if (!isValidEmail(event.target.value)) {
+                            setError("Invalid Email");
+                        } else {
+                            setError(null);
+                        }
+                        setEmail(event.target.value);
+                    } } />
+                    { error && email !== "" && <h5 id = "email-message">{ error }</h5> }
+                </div>
+                <div id="password-and-message-register">
+                    <input id="password-input-register" className="register-inputs" onKeyDown={ handleEnterButton } type="password" placeholder='Password' onChange={ passwordHandle }></input>
+                    { passError && password !== "" && <h5 className='error-messages'>{ passError }</h5> }
+                </div>
+                <div id="register-button-container">
+                    <button id="register-button" style={ { cursor: "pointer" } } disabled={ buttonHandleBoolean() } onClick={ registerHandle }>Register</button>
+                    { message && <h5 id = "register-message">{ message }</h5> }
+                </div>
             </div>
         </div>
     )

@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const Register = async (req, res) => {
     const { firstName, lastName, email, password, picture, country, location, bio, DOB } = req.body;
+    console.log(email);
     const newUser = new userModel({
         firstName, lastName, email, password, role: "64ebbb0594a4c80b31fd1dc2", picture, country, location, bio, DOB,
     })
