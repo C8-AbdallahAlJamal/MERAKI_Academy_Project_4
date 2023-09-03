@@ -1,14 +1,54 @@
 #navigation{
-    border: solid blue;
     margin: 0 auto;
     padding: 0;
     display: grid;
-    grid-template-columns: 6fr 6fr 6fr 6fr;
+    grid-template-columns: 1fr 1fr 4fr 1fr;
+    place-items: center;
     height: 90px;
     overflow: visible;
     position: sticky;
-    width: 100%;
+    width: 99.6%;
+    background-color: #BEADFA;
+    border-radius: 25px;
+    box-shadow: 0 0 4px 1px rgb(186, 186, 186);
 }
+#home-button{
+    justify-self: end;
+    width: 55px;
+    height: 55px;
+}
+
+#home-button:hover{
+    background-color: #FFF3A9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgb(151, 151, 151);
+}
+#navigation-picture{
+    justify-self: start;
+    height: 50px;
+    width: 50px;
+    margin-left: 20px;
+}
+
+#navigation-picture:hover{
+    background-color: #FFF3A9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgb(151, 151, 151);
+}
+
+#navigation-logout{
+    justify-self: center;
+    margin-left: 10px;
+    height: 50px;
+    width: 50px
+}
+
+#navigation-logout:hover{
+    background-color: #FFF3A9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgb(151, 151, 151);
+}
+
 #profile-picture{
     height: 80px;
     width: 80px;
@@ -18,7 +58,8 @@
 }
 
 #search-bar-outer {
-    position: relative; /* Set the container to relative position */
+    position: relative; 
+    justify-self: center;
 }
 
 #search-list {
@@ -31,16 +72,53 @@
     border: 1px solid #ccc; 
     border-top: none;
     display: none; 
-    width: 100%
+    width: 100%;
+    border-radius: 10px;
+}
+
+#search-bar{
+    width: 400px;
+    height: 40px;
+    text-indent: 10px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: rgb(224, 224, 224);
+    border: none;
+    box-shadow: 0 0 3px 1px rgb(168, 168, 168);
 }
 
 #search-bar-inner:focus-within #search-list {
     display: block;
 }
 
-#item:hover{
+#item{
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    align-items: center;
+    place-items: center;
+    margin: 0 20px;
+    height: 60px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 25px;
+}
+
+#item-outer:hover{
     background-color: rgb(167, 167, 167);
 }
-.hello{
-    border: red solid;
+
+.connection-button{
+    width: 60px;
+    height: 30px;
+    border-radius: 10px;
+    border:none;
+}
+
+#follow-button:hover{
+    background-color: green;
+    color: white
+}
+
+#unfollow-button:hover{
+    background-color: red;
+    color: white;
 }

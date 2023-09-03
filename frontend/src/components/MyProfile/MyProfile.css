@@ -1,32 +1,35 @@
-#my-profile-page{
-    border: solid red;
+#my-profile-page {
     max-width: 1300px;
     margin: auto;
     min-height: 100vh;
     height: fit-content;
 }
 
-#profile-picture-div{
+#profile-picture-div {
     width: fit;
     margin: 100px auto;
-    border: blue solid;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
+    background-color: #DFCCFB;
+    height: 280px;
 }
 
-#my-profile-picture{
-    border: red solid;
+#my-profile-picture {
     border-radius: 50%;
     width: 180px;
     height: 180px;
+    box-shadow: 0 0 5px 3px rgb(128, 128, 128);
 }
 
-#columns{
+#my-profile-picture:hover{
+    border-radius: 5px;
+}
+
+#columns {
     text-align: center;
-    border: blueviolet solid;
     height: 500px;
     display: grid;
     grid-template-columns: 2fr 4fr;
@@ -34,8 +37,9 @@
     height: fit-content;
 }
 
-#personal-info{
+#personal-info {
     border: rgb(140, 140, 140) solid;
+    box-shadow: 0 0 4px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,79 +48,212 @@
     overflow: hidden;
 }
 
-#posts-column{
-    border: red solid;
+#posts-column {
     border-radius: 20px;
-    height: fit-content; 
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 15px;
 }
-.width{
-    width:100%;
+.width {
+    width: 100%;
     border-bottom: rgb(126, 122, 122) 1px solid;
     height: 80px;
     display: flex;
     flex-direction: column;
     row-gap: 7px;
     justify-content: center;
-    font-family: 'Chivo';
+    font-family: "Chivo";
 }
-#DOB{
+#DOB {
     border-bottom: 0px;
 }
-.heads{
+.heads {
     font-size: 23px;
     color: rgb(45, 45, 45);
 }
-#add-post{
-    border: blue solid;
+#add-post {
+    border-radius: 15px;
+    background-color: #FFF3A0;
     display: flex;
-
+    justify-content: space-evenly;
+    align-items: center;
     margin: auto;
-    width: 80%;
+    width: 90%;
+    height: 100px;
+    margin-top: 15px;
 }
-.new-post-personal-picture{
-    width: 50px;
-    height: 50px;
+.new-post-personal-picture {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    border: red solid;
+    justify-self: end;
 }
 
-#new-post-textarea{
-    border-radius: 20px;
-    width: 70%;
+#new-post-textarea {
+    border-radius: 10px;
+    width: 80%;
+    height: 40px;
     text-align: center;
+    line-height: normal;
+    padding-top: 2%;
+    font-size: 20px;
 }
 
-#my-post-author-info{
-    border: blue solid;
-    display: flex;
+#my-post-author-info {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 2fr 10fr;
+    place-items: center;
+    margin-top: 5px;
 }
 
-.posts{
-    width: 80.5%;
+.posts {
+    width: 100%;
     margin: auto;
     border: yellow solid;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #DFCCFB;
 }
 
-.post-author{
+.post-author {
     font-family: "Chivo";
     align-self: center;
     margin-left: 5px;
 }
 
-.post-image{
+.post-image {
     width: 100%;
     border-radius: 20px;
 }
 
-#like-and-comment{
-    display: flex;
-    
+#like-and-comment {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    place-items: center;
+    margin-left:10px;
 }
 
-#post-content{
+#post-content {
     text-align: center;
+    margin: 10px 0;
+    width: 80%;
+    background-color: #FFF3DA;
+    border-radius: 10px;
+    min-height: 50px;
+    word-wrap: break-word;
 }
 
-#commenter-info{
+#commenter-info {
     display: flex;
+}
+
+#name{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 10px 0;
+    font-size: 30px;
+}
+
+#friends-count{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#post-button{
+    width: 60px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: #a9a9a9;
+    box-shadow: 0 0 5px grey;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+#post-button:hover{
+    color: white;
+}
+
+#my-posts{
+    width: 89%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 25px;
+    margin-bottom: 15px;
+    height: fit-content;
+}
+
+#delete-post-button{
+    justify-self: end;
+    height: 20px;
+    width:20px;
+}
+
+#delete-post-button:hover{
+    color: red;
+}
+
+.reaction-area{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    font-family: Chivo;
+    font-weight: 700;
+}
+
+.reaction-buttons-size{
+    height: 25px;
+    width: 25px;
+}
+
+.margin-num-of-comments{
+    margin-left: 5px;
+}
+
+.reaction-buttons-size:hover{
+    color: blue;
+}
+
+#comment-section{
+    border: blue solid;
+    width: 80%;
+    background-color: white;
+}
+
+#comments{
+    border: red solid;
+    width: 100%;
+    display: flex;
+    background-color: #DFCCFB;
+    flex-direction: column;
+    border-radius: 10px;
+    row-gap: 5px;
+}
+
+#comment{
+    border: green solid;
+}
+
+#new-comment{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: yellow solid;
+    column-gap: 5px;
+}
+
+#new-comment-input{
+    width: 40%;
+    height: 20px;
+    border-radius: 5px;
+    border: none;
+}
+#comment-button{
+
 }

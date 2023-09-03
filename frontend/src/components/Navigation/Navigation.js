@@ -78,10 +78,11 @@ const Navigation = () => {
     return (
         localStorage.getItem("Token") &&
         <div id="navigation">
-            <BiHomeAlt2 onClick={ homeButtonHandle } style={ { cursor: "pointer" } } />
+            <BiHomeAlt2 id="home-button" onClick={ homeButtonHandle } style={ { cursor: "pointer" } } />
+            <Avatar id="navigation-picture" src={ user.URL } onClick={ goToMyProfile } style={ { cursor: "pointer" } } />
             <div id="search-bar-outer">
                 <div id="search-bar-inner">
-                    <input onClick={ getAllUsers } type="text" onChange={ (event) => { setValue(event.target.value) } } placeholder='Search...' />
+                    <input id="search-bar" onClick={ getAllUsers } type="text" onChange={ (event) => { setValue(event.target.value) } } placeholder='Search...' />
                     <div id="search-list">
                         { searchedUsers.filter(element => {
                             const word = value.toLowerCase();
@@ -89,25 +90,27 @@ const Navigation = () => {
                             return fullName.includes(word);
                         }).map((element) => {
                             return (
-                                <div id="item" key={ element._id }>
-                                    <h4 style={ { cursor: "pointer" } } onMouseDown={ () => { navigate(`/profile/${element._id}`) } }>{ element.firstName + " " + element.lastName }</h4>
+                                <div id = "item-outer">
+                                    <div id="item" key={ element._id }>
+                                        <Avatar style={{cursor: "pointer"}} onMouseDown={ () => { navigate(`/profile/${element._id}`) } }  src={ element.picture } />
+                                        <h4 className='item-name' style={ { cursor: "pointer" } } onMouseDown={ () => { navigate(`/profile/${element._id}`) } }>{ element.firstName + " " + element.lastName }</h4>
 
-                                    {
-                                        !user.friends.find((item) => { return item._id === element._id; }) ?
+                                        {
+                                            !user.friends.find((item) => { return item._id === element._id; }) ?
 
-                                            <button name={ element._id } onClick={ () => { followUser(element._id) } }>Follow</button>
-                                            :
-                                            <button name={ element._id } onClick={ () => { UnfollowUser(element._id) } }>Unfollow</button>
-                                    }
+                                                <button id = "follow-button" style={ { cursor: "pointer" } } className='connection-button' name={ element._id } onClick={ () => { followUser(element._id) } }>Follow</button>
+                                                :
+                                                <button id = "unfollow-button" style={ { cursor: "pointer" } } className='connection-button' name={ element._id } onClick={ () => { UnfollowUser(element._id) } }>Unfollow</button>
+                                        }
+                                    </div>
                                 </div>
                             )
                         }) }
                     </div>
                 </div>
             </div>
-            <Avatar src={ user.URL } onClick={ goToMyProfile } style={ { cursor: "pointer" } } />
 
-            <FiLogOut style={ { cursor: "pointer" } } onClick={ handleLogOut } />
+            <FiLogOut id="navigation-logout" style={ { cursor: "pointer" } } onClick={ handleLogOut } />
         </div>
     )
 }
