@@ -1,6 +1,6 @@
 <p align="center">
 <a target="_blank" rel="noopener noreferrer">
- <img src="./image/logo.png" alt="Project logo">
+ <img src="./images/logo.png" alt="Project logo">
  </a>
 </p>
 
