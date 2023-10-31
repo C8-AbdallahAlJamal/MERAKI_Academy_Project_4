@@ -30,8 +30,6 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
-
 Ex. Are you looking for a simple social media platform that is quick and easy? The **CONNECTHUB** is the greatest and most accurate application to do this for you. It helps you to **1) follow people 2) see and interact with their posts by liking or commenting 3) create posts and let people comment their thoughts on it 4) you can also delete posts or comments related to you**. **CONNECTHUB** provides a simple design to ensure having the best user experience.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
