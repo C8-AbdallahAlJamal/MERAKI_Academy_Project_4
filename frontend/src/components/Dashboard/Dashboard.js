@@ -29,7 +29,7 @@ const Dashboard = () => {
 
     const getPosts = async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/post/`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.get("https://connect-hub-88o5.onrender.com/"+`/post/`, { headers: { Authorization: `Bearer ${user.token}` } });
             setPosts(result.data.posts);
 
         } catch (error) {
@@ -39,7 +39,7 @@ const Dashboard = () => {
 
     const getUserInfo = async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.get("https://connect-hub-88o5.onrender.com/"+`/user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
         } catch (error) {
             console.log(error.message);
         }
@@ -47,7 +47,7 @@ const Dashboard = () => {
 
     const Like = async (postId) => {
         try {
-            const result = await axios.put(`http://localhost:5000/post/${postId}/like`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.put("https://connect-hub-88o5.onrender.com/"+`/post/${postId}/like`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             setPosts(posts.map((element) => {
                 if (result.data.post._id === element._id) {
                     element.numberOfLikes++;
@@ -64,7 +64,7 @@ const Dashboard = () => {
         const description = comment;
         if (comment != "") {
             try {
-                const result = await axios.post(`http://localhost:5000/post/${event.target.name}/comment`, { description }, { headers: { Authorization: `Bearer ${user.token}` } });
+                const result = await axios.post("https://connect-hub-88o5.onrender.com/"+`/post/${event.target.name}/comment`, { description }, { headers: { Authorization: `Bearer ${user.token}` } });
                 setPosts(posts.map((element) => {
                     if (result.data.result._id === element._id) {
                         element.comments.push(result.data.comment);
@@ -93,7 +93,7 @@ const Dashboard = () => {
         if (localStorage.getItem("Token")) {
             if (postContent !== "") {
                 try {
-                    const result = await axios.post("http://localhost:5000/post/", { description: postContent, picture: "" }, { headers: { Authorization: `Bearer ${user.token}` } });
+                    const result = await axios.post("https://connect-hub-88o5.onrender.com/"+"/post/", { description: postContent, picture: "" }, { headers: { Authorization: `Bearer ${user.token}` } });
                     setPosts([result.data.post, ...posts]);
                 } catch (error) {
                     console.log(error.message);
@@ -107,7 +107,7 @@ const Dashboard = () => {
 
     const deletePost = async (postId) => {
         try {
-            const result = await axios.delete(`http://localhost:5000/post/${postId}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.delete("https://connect-hub-88o5.onrender.com/"+`/post/${postId}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             getPosts();
         } catch (error) {
             console.log(error.message)
@@ -117,7 +117,7 @@ const Dashboard = () => {
 
     const deleteComment = async (postId, commentId) => {
         try {
-            const result = await axios.delete(`http://localhost:5000/post/deletecomment/${postId}/${commentId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.delete("https://connect-hub-88o5.onrender.com/"+`/post/deletecomment/${postId}/${commentId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             getPosts();
         } catch (error) {
             console.log(error.message)

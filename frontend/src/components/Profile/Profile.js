@@ -40,7 +40,7 @@ const Profile = () => {
 
     const getUserInfo = async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/user/profile/${userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.get(`https://connect-hub-88o5.onrender.com//user/profile/${userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             if (result.data.success) {
                 setName(result.data.result.firstName + " " + result.data.result.lastName);
                 setNumOfFriends(result.data.result.friends.length);
@@ -61,7 +61,7 @@ const Profile = () => {
 
     const getUserPosts = async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/post/${userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.get(`https://connect-hub-88o5.onrender.com//post/${userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             if (result.data.success) {
                 result.data.posts.reverse();
                 setPosts(result.data.posts);
@@ -76,7 +76,7 @@ const Profile = () => {
 
     const Like = async (postId) => {
         try {
-            const result = await axios.put(`http://localhost:5000/post/${postId}/like`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.put(`https://connect-hub-88o5.onrender.com//post/${postId}/like`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             setPosts(posts.map((element) => {
                 if (result.data.post._id === element._id) {
                     element.numberOfLikes++;
@@ -93,7 +93,7 @@ const Profile = () => {
         const description = comment;
         if (comment != "") {
             try {
-                const result = await axios.post(`http://localhost:5000/post/${event.target.name}/comment`, { description }, { headers: { Authorization: `Bearer ${user.token}` } });
+                const result = await axios.post(`https://connect-hub-88o5.onrender.com//post/${event.target.name}/comment`, { description }, { headers: { Authorization: `Bearer ${user.token}` } });
                 setPosts(posts.map((element) => {
                     if (result.data.result._id === element._id) {
                         element.comments.push(result.data.comment);
@@ -116,7 +116,7 @@ const Profile = () => {
 
     const deleteComment = async (postId, commentId) => {
         try {
-            const result = await axios.delete(`http://localhost:5000/post/deletecomment/${postId}/${commentId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.delete(`https://connect-hub-88o5.onrender.com//post/deletecomment/${postId}/${commentId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             getUserPosts();
         } catch (error) {
 

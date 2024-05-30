@@ -55,7 +55,7 @@ const Register = () => {
             setMessage("");
             try {
                 const registerObj = { firstName, lastName, email, password, picture: url, country, location, bio, DOB };
-                const result = await axios.post("http://localhost:5000/user/Register", registerObj);
+                const result = await axios.post("https://connect-hub-88o5.onrender.com//user/Register", registerObj);
                 setMessage(result.data.message);
                 if (result.data.success) {
                     setTimeout(() => {

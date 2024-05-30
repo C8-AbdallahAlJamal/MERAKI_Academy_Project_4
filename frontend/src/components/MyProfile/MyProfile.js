@@ -37,7 +37,7 @@ const MyProfile = () => {
 
     const getUserInfo = async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.get("https://connect-hub-88o5.onrender.com/"+`/user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             if (result.data.success) {
                 setName(result.data.userInfo.firstName + " " + result.data.userInfo.lastName);
                 setNumOfFriends(result.data.userInfo.friends.length);
@@ -64,7 +64,7 @@ const MyProfile = () => {
         if (localStorage.getItem("Token")) {
             if (postContent !== "") {
                 try {
-                    const result = await axios.post("http://localhost:5000/post/", { description: postContent, picture: "" }, { headers: { Authorization: `Bearer ${user.token}` } });
+                    const result = await axios.post("https://connect-hub-88o5.onrender.com//post/", { description: postContent, picture: "" }, { headers: { Authorization: `Bearer ${user.token}` } });
                     setMyPosts([result.data.post, ...myPosts]);
                 } catch (error) {
                     console.log(error.message);
@@ -78,7 +78,7 @@ const MyProfile = () => {
 
     const getMyPosts = async () => {
         try {
-            const result = await axios.get("http://localhost:5000/post/myposts", { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.get("https://connect-hub-88o5.onrender.com//post/myposts", { headers: { Authorization: `Bearer ${user.token}` } });
             result.data.posts.reverse();
             setMyPosts(result.data.posts);
 
@@ -89,7 +89,7 @@ const MyProfile = () => {
 
     const Like = async (postId) => {
         try {
-            const result = await axios.put(`http://localhost:5000/post/${postId}/like`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.put(`https://connect-hub-88o5.onrender.com//post/${postId}/like`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             setMyPosts(myPosts.map((element) => {
                 if (result.data.post._id === element._id) {
                     element.numberOfLikes++;
@@ -106,7 +106,7 @@ const MyProfile = () => {
         const description = comment;
         if (comment != "") {
             try {
-                const result = await axios.post(`http://localhost:5000/post/${event.target.name}/comment`, { description }, { headers: { Authorization: `Bearer ${user.token}` } });
+                const result = await axios.post(`https://connect-hub-88o5.onrender.com//post/${event.target.name}/comment`, { description }, { headers: { Authorization: `Bearer ${user.token}` } });
                 setMyPosts(myPosts.map((element) => {
                     if (result.data.result._id === element._id) {
                         element.comments.push(result.data.comment);
@@ -131,13 +131,13 @@ const MyProfile = () => {
         fetch("https://api.cloudinary.com/v1_1/dbkfrtdjm/image/upload", { method: "post", body: data }).then(resp => resp.json()).then(async data => {
             setPicture(data.url)
             user.setURL(data.url);
-            const result = await axios.put("http://localhost:5000/user/changepicture", { picture: data.url }, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.put("https://connect-hub-88o5.onrender.com//user/changepicture", { picture: data.url }, { headers: { Authorization: `Bearer ${user.token}` } });
         }).catch(err => console.log(err));
     }
 
     const deletePost = async (postId) => {
         try {
-            const result = await axios.delete(`http://localhost:5000/post/${postId}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.delete(`https://connect-hub-88o5.onrender.com//post/${postId}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             getMyPosts();
         } catch (error) {
             console.log(error.message)
@@ -147,7 +147,7 @@ const MyProfile = () => {
 
     const deleteComment = async (postId, commentId) => {
         try {
-            const result = await axios.delete(`http://localhost:5000/post/deletecomment/${postId}/${commentId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.delete(`https://connect-hub-88o5.onrender.com//post/deletecomment/${postId}/${commentId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             getMyPosts();
         } catch (error) {
             console.log(error.message);
