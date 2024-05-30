@@ -27,7 +27,7 @@ const App = () => {
 
     const getMyInfo = async () => {
         try {
-            const result = await axios.get("https://connect-hub-88o5.onrender.com/"+`/user/${localStorage.getItem("userId")}`, { headers: { Authorization: `Bearer ${localStorage.getItem("Token")}` } });
+            const result = await axios.get(`https://connect-hub-88o5.onrender.com/user/${localStorage.getItem("userId")}`, { headers: { Authorization: `Bearer ${localStorage.getItem("Token")}` } });
             setMyInfo(result.data.userInfo);
             setFriends(result.data.userInfo.friends);
         } catch (error) {

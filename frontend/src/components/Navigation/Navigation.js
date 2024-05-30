@@ -16,7 +16,7 @@ const Navigation = () => {
     const [value, setValue] = useState("");
     const pictureHandle = async () => {
         if (localStorage.getItem("Token")) {
-            const result = await axios.get(`https://connect-hub-88o5.onrender.com//user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.get(`https://connect-hub-88o5.onrender.com/user/${user.userId}`, { headers: { Authorization: `Bearer ${user.token}` } });
             if (result.data.success) {
                 user.setURL(result.data.userInfo.picture);
             } else {
@@ -48,7 +48,7 @@ const Navigation = () => {
 
     const getAllUsers = async () => {
         try {
-            const result = await axios.get("https://connect-hub-88o5.onrender.com//user/all/users", { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.get("https://connect-hub-88o5.onrender.com/user/all/users", { headers: { Authorization: `Bearer ${user.token}` } });
             if (result.data.result.length > 0) {
                 setSearchedUsers(result.data.result)
             }
@@ -59,7 +59,7 @@ const Navigation = () => {
 
     const followUser = async (event) => {
         try {
-            const result = await axios.put(`https://connect-hub-88o5.onrender.com//user/addfriend/${event}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.put(`https://connect-hub-88o5.onrender.com/user/addfriend/${event}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             user.setFriends(result.data.userFriendsList);
         } catch (error) {
             console.log(error.message);
@@ -68,7 +68,7 @@ const Navigation = () => {
 
     const UnfollowUser = async (event) => {
         try {
-            const result = await axios.put(`https://connect-hub-88o5.onrender.com//user/removefriend/${event}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
+            const result = await axios.put(`https://connect-hub-88o5.onrender.com/user/removefriend/${event}`, {}, { headers: { Authorization: `Bearer ${user.token}` } });
             user.setFriends(result.data.userFriendsList);
         } catch (error) {
 
